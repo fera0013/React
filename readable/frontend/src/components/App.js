@@ -10,7 +10,7 @@ class App extends Component {
         categories: []
     }
     componentDidMount() {
-        ReadableAPI.getAll().then((categories) => {
+        ReadableAPI.getAllCategories().then((categories) => {
             this.setState({ categories })
         })
     }

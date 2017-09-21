@@ -1,8 +1,7 @@
-export const ADD_RECIPE = 'ADD_RECIPE'
-export const REMOVE_FROM_CALENDAR = 'REMOVE_FROM_CALENDAR'
+export const  UPDATE_POST = 'UPDATE_POST'
 
-export function baseAction ({) {
+export function updatePost () {
   return {
-
-  }
+      type: UPDATE_POST,
+  };
 }
