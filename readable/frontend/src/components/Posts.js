@@ -1,36 +1,19 @@
 /**
- * Created by z0017fjy on 20.09.2017.
+ * Created by z0017fjy on 26.09.2017.
  */
-import React from 'react';
-import { connect } from 'react-redux';
-import * as ReadableAPI from '../ReadableAPI';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-
-
-class Posts extends React.Component {
-
-
+export default class Posts extends Component {
     render() {
-        console.log(this.props.posts);
         return (
-            <div>
-
-            </div>
+            <ul>
+                {this.props.posts.map((post, i) => <li key={i}>{post.title}</li>)}
+            </ul>
         )
     }
 }
 
-
-function mapStateToProps ({ posts }) {
-
-    return {
-        posts: posts,
-    }
+Posts.propTypes = {
+    posts: PropTypes.array.isRequired
 }
-
-
-
-export default connect(
-    mapStateToProps,
-)(Posts)
-
