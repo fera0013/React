@@ -3,51 +3,50 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 
 export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const SELECT_SUBREDDIT = 'SELECT_SUBREDDIT'
-export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT'
+export const SELECT_CATEGORY = 'SELECT_CATEGORY'
+export const INVALIDATE_CATEGORY = 'INVALIDATE_CATEGORY'
 
 
 
-export function selectSubreddit(subreddit) {
+export function selectCategory(category) {
     return {
-        type: SELECT_SUBREDDIT,
-        subreddit
+        type: SELECT_CATEGORY,
+        category
     }
 }
 
-export function invalidateSubreddit(subreddit) {
+export function invalidateCategory(category) {
     return {
-        type: INVALIDATE_SUBREDDIT,
-        subreddit
+        type: INVALIDATE_CATEGORY,
+        category
     }
 }
 
-function requestPosts(subreddit) {
+function requestPosts(category) {
     return {
         type: REQUEST_POSTS,
-        subreddit
+        category
     }
 }
 
-function receivePosts(subreddit, posts) {
-    console.log(posts)
+function receivePosts(category, posts) {
     return {
         type: RECEIVE_POSTS,
-        subreddit,
+        category,
         posts: posts,
         receivedAt: Date.now()
     }
 }
 
-function fetchPosts(subreddit) {
+function fetchPosts(category) {
     return dispatch => {
-        dispatch(requestPosts(subreddit))
-        return ReadableAPI.getAllPosts().then(posts => dispatch(receivePosts(subreddit, posts)))
+        dispatch(requestPosts(category))
+        return ReadableAPI.getAllPosts().then(posts => dispatch(receivePosts(category, posts)))
     }
 }
 
-function shouldFetchPosts(state, subreddit) {
-    const posts = state.postsBySubreddit[subreddit]
+function shouldFetchPosts(state, category) {
+    const posts = state.postsByCategory[category]
     if (!posts) {
         return true
     } else if (posts.isFetching) {
@@ -57,10 +56,10 @@ function shouldFetchPosts(state, subreddit) {
     }
 }
 
-export function fetchPostsIfNeeded(subreddit) {
+export function fetchPostsIfNeeded(category) {
     return (dispatch, getState) => {
-        if (shouldFetchPosts(getState(), subreddit)) {
-            return dispatch(fetchPosts(subreddit))
+        if (shouldFetchPosts(getState(), category)) {
+            return dispatch(fetchPosts(category))
         }
     }
 }

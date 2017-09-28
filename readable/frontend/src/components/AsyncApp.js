@@ -5,9 +5,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
-    selectSubreddit,
+    selectCategory,
     fetchPostsIfNeeded,
-    invalidateSubreddit
+    invalidateCategory
 } from '../actions'
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
@@ -18,7 +18,7 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 
 class AsyncApp extends Component {
     state={
-        categories:[]
+        categories:['all']
     }
     constructor(props) {
         super(props)
@@ -27,41 +27,39 @@ class AsyncApp extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        const { dispatch, selectedCategory } = this.props
+        dispatch(fetchPostsIfNeeded(selectedCategory))
         ReadableAPI.getAllCategories().then((categories) => {
-            this.setState({ categories })
+            this.setState({ categories: [...this.state.categories, ...categories ] })
         })
-        console.log(this.state.categories)
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.selectedSubreddit !== prevProps.selectedSubreddit) {
-            const { dispatch, selectedSubreddit } = this.props
-            dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        if (this.props.selectedCategory !== prevProps.selectedCategory) {
+            const { dispatch, selectedCategory } = this.props
+            dispatch(fetchPostsIfNeeded(selectedCategory))
         }
     }
 
-    handleChange(nextSubreddit) {
-        this.props.dispatch(selectSubreddit(nextSubreddit))
-        this.props.dispatch(fetchPostsIfNeeded(nextSubreddit))
+    handleChange(nextCategory) {
+        this.props.dispatch(selectCategory(nextCategory))
+        this.props.dispatch(fetchPostsIfNeeded(nextCategory))
     }
 
     handleRefreshClick(e) {
         e.preventDefault()
-
-        const { dispatch, selectedSubreddit } = this.props
-        dispatch(invalidateSubreddit(selectedSubreddit))
-        dispatch(fetchPostsIfNeeded(selectedSubreddit))
+        const { dispatch, selectedCategory } = this.props
+        dispatch(invalidateCategory(selectedCategory ))
+        dispatch(fetchPostsIfNeeded(selectedCategory ))
     }
 
     render() {
-        const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
-        console.log("state categories: "+this.state.categories)
+        console.log(this.props.posts)
+        const { selectedCategory, posts, isFetching, lastUpdated } = this.props
         return (
             <div>
                 <Picker
-                    value={selectedSubreddit}
+                    value={selectedCategory}
                     onChange={this.handleChange}
                     options={this.state.categories}
                 />
@@ -80,7 +78,9 @@ class AsyncApp extends Component {
                 {!isFetching && posts.length === 0 && <h2>Empty.</h2>}
                 {posts.length > 0 &&
                 <div style={{ opacity: isFetching ? 0.5 : 1 }}>
-                    <Posts posts={posts} />
+                    <Posts posts={posts.filter((post)=>{
+                        return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
+                    })} />
                 </div>}
             </div>
         )
@@ -88,7 +88,7 @@ class AsyncApp extends Component {
 }
 
 AsyncApp.propTypes = {
-    selectedSubreddit: PropTypes.string.isRequired,
+    selectedCategory: PropTypes.string.isRequired,
     posts: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
@@ -96,18 +96,18 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { selectedSubreddit, postsBySubreddit } = state
+    const { selectedCategory, postsByCategory } = state
     const {
         isFetching,
         lastUpdated,
         items: posts
-    } = postsBySubreddit[selectedSubreddit] || {
+    } = postsByCategory[selectedCategory] || {
         isFetching: true,
         items: []
     }
 
     return {
-        selectedSubreddit,
+        selectedCategory,
         posts,
         isFetching,
         lastUpdated
