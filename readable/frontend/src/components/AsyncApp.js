@@ -29,7 +29,10 @@ class AsyncApp extends Component {
     componentDidMount() {
         const { dispatch, selectedSubreddit } = this.props
         dispatch(fetchPostsIfNeeded(selectedSubreddit))
-        ReadableAPI.getAllCategories().then(categories=>this.setState(categories))
+        ReadableAPI.getAllCategories().then((categories) => {
+            this.setState({ categories })
+        })
+        console.log(this.state.categories)
     }
 
     componentDidUpdate(prevProps) {
