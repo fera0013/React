@@ -4,7 +4,7 @@ import {
     INVALIDATE_CATEGORY,
     REQUEST_POSTS,
     RECEIVE_POSTS
-} from '../actions/index'
+} from '../actions/post'
 
 function selectedCategory(state = 'reactjs', action) {
     switch (action.type) {

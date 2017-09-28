@@ -8,7 +8,7 @@ import {
     selectCategory,
     fetchPostsIfNeeded,
     invalidateCategory
-} from '../actions'
+} from '../actions/post'
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
 import * as ReadableAPI from "../utils/ReadableAPI";
@@ -54,7 +54,6 @@ class AsyncApp extends Component {
     }
 
     render() {
-        console.log(this.props.posts)
         const { selectedCategory, posts, isFetching, lastUpdated } = this.props
         return (
             <div>
