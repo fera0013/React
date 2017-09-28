@@ -33,7 +33,7 @@ function receiveComments(post, comments) {
     return {
         type: RECEIVE_COMMENTS,
         post,
-        posts: comments,
+        comments: comments,
         receivedAt: Date.now()
     }
 }
@@ -41,7 +41,7 @@ function receiveComments(post, comments) {
 function fetchComments(post) {
     return dispatch => {
         dispatch(requestComments(post))
-        return ReadableAPI.getAllComments(post).then(comments => dispatch(receiveComments(post, comments)))
+        return ReadableAPI.getCommentsForPost(post).then(comments => dispatch(receiveComments(post, comments)))
     }
 }
 
