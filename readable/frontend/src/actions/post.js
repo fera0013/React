@@ -1,10 +1,10 @@
 import fetch from 'isomorphic-fetch'
 import * as ReadableAPI from "../utils/ReadableAPI";
 
-export const REQUEST_POSTS = 'REQUEST_COMMENTS'
-export const RECEIVE_POSTS = 'RECEIVE_COMMENTS'
-export const SELECT_CATEGORY = 'SELECT_POST'
-export const INVALIDATE_CATEGORY = 'INVALIDATE_POST'
+export const REQUEST_POSTS = 'REQUEST_POSTS'
+export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+export const SELECT_CATEGORY = 'SELECT_CATEGORY'
+export const INVALIDATE_CATEGORY = 'INVALIDATE_CATEGORY'
 
 
 

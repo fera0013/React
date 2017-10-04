@@ -13,7 +13,7 @@ import {
     RECEIVE_COMMENTS
 } from '../actions/comments'
 
-function selectedCategory(state = 'reactjs', action) {
+function selectedCategory(state = 'all', action) {
     switch (action.type) {
         case SELECT_CATEGORY:
             return action.category
@@ -65,11 +65,10 @@ function postsByCategory(state = {}, action) {
     }
 }
 
-
 function selectedPost(state = '', action) {
     switch (action.type) {
         case SELECT_POST:
-            return action.post
+            return action.post_id
         default:
             return state
     }
@@ -84,10 +83,6 @@ function comments(
     action
 ) {
     switch (action.type) {
-        case INVALIDATE_POST:
-            return Object.assign({}, state, {
-                didInvalidate: true
-            })
         case REQUEST_COMMENTS:
             return Object.assign({}, state, {
                 isFetching: true,
@@ -111,7 +106,7 @@ function commentsByPost(state = {}, action) {
         case RECEIVE_COMMENTS:
         case REQUEST_COMMENTS:
             return Object.assign({}, state, {
-                [action.category]: comments(state[action.post], action)
+                [action.post_id]: comments(state[action.post_id], action)
             })
         default:
             return state
@@ -121,7 +116,9 @@ function commentsByPost(state = {}, action) {
 
 const rootReducer = combineReducers({
     postsByCategory,
-    selectedCategory
+    selectedCategory,
+    commentsByPost,
+    selectedPost
 })
 
 export default rootReducer

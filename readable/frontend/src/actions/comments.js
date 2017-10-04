@@ -1,4 +1,3 @@
-import fetch from 'isomorphic-fetch'
 import * as ReadableAPI from "../utils/ReadableAPI";
 
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
@@ -8,45 +7,45 @@ export const INVALIDATE_POST = 'INVALIDATE_POST'
 
 
 
-export function selectPost(post) {
+export function selectPost(post_id) {
     return {
         type: SELECT_POST,
-        post
+        post_id
     }
 }
 
-export function invalidatePost(post) {
+export function invalidatePost(post_id) {
     return {
         type: INVALIDATE_POST,
-        post
+        post_id
     }
 }
 
-function requestComments(POST) {
+function requestComments(post_id) {
     return {
         type: REQUEST_COMMENTS,
-        POST
+        post_id
     }
 }
 
-function receiveComments(post, comments) {
+function receiveComments(post_id, comments) {
     return {
         type: RECEIVE_COMMENTS,
-        post,
+        post_id,
         comments: comments,
         receivedAt: Date.now()
     }
 }
 
-function fetchComments(post) {
+function fetchComments(post_id) {
     return dispatch => {
-        dispatch(requestComments(post))
-        return ReadableAPI.getCommentsForPost(post).then(comments => dispatch(receiveComments(post, comments)))
+        dispatch(requestComments(post_id))
+        return ReadableAPI.getCommentsForPost(post_id).then(comments => dispatch(receiveComments(post_id, comments)))
     }
 }
 
-function shouldFetchComments(state,post) {
-    const comments = state.comments[post]
+function shouldFetchComments(state,post_id) {
+    const comments = state.commentsByPost[post_id]
     if (!comments) {
         return true
     } else if (comments.isFetching) {
@@ -56,10 +55,10 @@ function shouldFetchComments(state,post) {
     }
 }
 
-export function fetchCommentsIfNeeded(post) {
+export function fetchCommentsIfNeeded(post_id) {
     return (dispatch, getState) => {
-        if (shouldFetchComments(getState(), post)) {
-            return dispatch(fetchComments(post))
+        if (shouldFetchComments(getState(), post_id)) {
+            return dispatch(fetchComments(post_id))
         }
     }
 }
