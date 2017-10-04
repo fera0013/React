@@ -62,21 +62,8 @@ class AsyncApp extends Component {
                     onChange={this.handleChange}
                     options={this.state.categories}
                 />
-                <p>
-                    {lastUpdated &&
-                    <span>
-              Last updated at {new Date(lastUpdated).toLocaleTimeString()}.
-                        {' '}
-            </span>}
-                    {!isFetching &&
-                    <a href="#" onClick={this.handleRefreshClick}>
-                        Refresh
-                    </a>}
-                </p>
-                {isFetching && posts.length === 0 && <h2>Loading...</h2>}
-                {!isFetching && posts.length === 0 && <h2>Empty.</h2>}
                 {posts.length > 0 &&
-                <div style={{ opacity: isFetching ? 0.5 : 1 }}>
+                <div>
                     <Posts posts={posts.filter((post)=>{
                         return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
                     })} />
