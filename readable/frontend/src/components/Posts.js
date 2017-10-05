@@ -48,7 +48,7 @@ export class Posts extends Component {
                     </Link>
                 ))}
                 <Picker
-                    value={'Sort by: '+this.state.sortMethod}
+                    value={this.state.sortMethod}
                     options={this.state.sortMethods}
                     onChange={(itemValue, itemIndex) => this.setState({sortMethod: itemValue})}
                 />
