@@ -12,6 +12,8 @@ import {
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
 import * as ReadableAPI from "../utils/ReadableAPI";
+import {Route} from "react-router-dom";
+import {Post} from "./Post";
 
 
 
@@ -57,17 +59,19 @@ class AsyncApp extends Component {
         const { selectedCategory, posts, isFetching, lastUpdated } = this.props
         return (
             <div>
-                <Picker
-                    value={selectedCategory}
-                    onChange={this.handleChange}
-                    options={this.state.categories}
-                />
-                {posts.length > 0 &&
-                <div>
-                    <Posts posts={posts.filter((post)=>{
-                        return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
-                    })} />
-                </div>}
+                <Route exact path='/' render={() => (
+                    <div>
+                        <Picker
+                            value={selectedCategory}
+                            onChange={this.handleChange}
+                            options={this.state.categories}
+                        />
+                        {posts.length > 0 &&
+                        <Posts posts={posts.filter((post)=>{
+                            return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
+                        })} />}
+                    </div>
+                )}/>
             </div>
         )
     }
