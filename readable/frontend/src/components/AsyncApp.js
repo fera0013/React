@@ -12,7 +12,7 @@ import {
 import Picker from '../components/Picker'
 import Posts from '../components/Posts'
 import * as ReadableAPI from "../utils/ReadableAPI";
-import {Route} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import {Post} from "./Post";
 
 
@@ -49,20 +49,25 @@ class AsyncApp extends Component {
         this.props.dispatch(fetchPostsIfNeeded(nextCategory))
     }
 
-    handleSortMethodChange(selectedSortMethod){
-        this.setState({sortMethod:selectedSortMethod})
-    }
 
     render() {
-        const { selectedCategory, posts, isFetching, lastUpdated } = this.props
+        const { selectedCategory, posts } = this.props
         return (
             <div>
-                <Route exact path='/' render={() => (
+                {this.state.categories.map((category) => (
+                    <Link  to={`/${category}`}>{category}</Link>
+                ))}
+                <Route path='/:category' render={() => (
                     <div>
                         <Picker
-                            value={selectedCategory}
+                            value={'Category: '+selectedCategory}
                             onChange={this.handleChange}
                             options={this.state.categories}
+                        />
+                        <Picker
+                            value={'Sort by: '+this.state.sortMethod}
+                            options={this.state.sortMethods}
+                            onChange={(itemValue, itemIndex) => this.setState({sortMethod: itemValue})}
                         />
                         {posts.length > 0 &&
                         <Posts posts={posts.filter((post)=>{
