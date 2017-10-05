@@ -20,16 +20,17 @@ import {Post} from "./Post";
 
 class AsyncApp extends Component {
     state={
-        categories:['all']
+        categories:['all'],
+        sortMethods:['voteScore','timestamp'],
+        sortMethod: 'voteScore'
     }
     constructor(props) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
-        this.handleRefreshClick = this.handleRefreshClick.bind(this)
     }
 
     componentDidMount() {
-        const { dispatch, selectedCategory } = this.props
+        const { dispatch, selectedCategory,posts } = this.props
         dispatch(fetchPostsIfNeeded(selectedCategory))
         ReadableAPI.getAllCategories().then((categories) => {
             this.setState({ categories: [...this.state.categories, ...categories ] })
@@ -48,11 +49,8 @@ class AsyncApp extends Component {
         this.props.dispatch(fetchPostsIfNeeded(nextCategory))
     }
 
-    handleRefreshClick(e) {
-        e.preventDefault()
-        const { dispatch, selectedCategory } = this.props
-        dispatch(invalidateCategory(selectedCategory ))
-        dispatch(fetchPostsIfNeeded(selectedCategory ))
+    handleSortMethodChange(selectedSortMethod){
+        this.setState({sortMethod:selectedSortMethod})
     }
 
     render() {
@@ -69,6 +67,8 @@ class AsyncApp extends Component {
                         {posts.length > 0 &&
                         <Posts posts={posts.filter((post)=>{
                             return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
+                        }).sort((post_1,post_2)=>{
+                            return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
                         })} />}
                     </div>
                 )}/>
