@@ -41,11 +41,17 @@ class AsyncApp extends Component {
                 <Route exact path='/:category' render={() => (
                     <Posts/>
                 )}/>
-                <Route exact path='/create' render={() => (
+                <Route exact path='/edit' render={() => (
                     <div>
                        Create
                     </div>
                 )}/>
+                <div className="open-search">
+                    <Link
+                        to='/edit'
+                        className='add-contact'
+                    >Create new post</Link>
+                </div>
             </div>
         )
     }

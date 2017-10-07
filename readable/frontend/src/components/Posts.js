@@ -64,15 +64,6 @@ export class Posts extends Component {
                             </div>
                         )})}
                 </ul>
-              {/*  {this.props.posts.length > 0 &&
-                    <Post post_id={this.props.posts[0].id}/>
-                }*/}
-                <div className="open-search">
-                    <Link
-                        to='/create'
-                        className='add-contact'
-                    >Add a post</Link>
-                </div>
             </div>
         )
     }
