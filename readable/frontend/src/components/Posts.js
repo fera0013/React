@@ -55,7 +55,7 @@ export class Posts extends Component {
                         return(
                             <div key={post.id}>
                                 <Link
-                                    to={`/${selectedCategory}`}
+                                    to={`/${selectedCategory}/${post.id}`}
                                     onClick={() => this.handleSelectPost(post.id)}>
                                     {post.title}
                                 </Link>
