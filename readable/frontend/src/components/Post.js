@@ -11,9 +11,8 @@ import { connect } from 'react-redux'
 
 export class Post extends Component {
     componentDidMount() {
-        const { dispatch,post_id} = this.props
-        dispatch(selectPost(post_id))
-        dispatch(fetchCommentsIfNeeded(post_id))
+        const { dispatch,selectedPost} = this.props
+        dispatch(fetchCommentsIfNeeded(selectedPost))
     }
     render() {
         return (
@@ -22,10 +21,6 @@ export class Post extends Component {
             </ul>
         )
     }
-}
-
-Post.propTypes = {
-    comments: PropTypes.array.isRequired
 }
 
 function mapStateToProps(state) {

@@ -4,12 +4,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Post from './Post'
-import * as ReadableAPI from "../utils/ReadableAPI";
 import {
-    selectCategory,
-    fetchPostsIfNeeded,
-    invalidateCategory
+    fetchPostsIfNeeded
 } from '../actions/post'
+import {
+    selectPost
+} from '../actions/comments'
 import {Link} from "react-router-dom";
 import Picker from "./Picker";
 import {dispatch} from "redux";
@@ -18,35 +18,29 @@ import {connect} from "react-redux";
 export class Posts extends Component {
     state={
         sortMethods:['voteScore','timestamp'],
-        sortMethod: 'voteScore',
-        categories:['all']
+        sortMethod: 'voteScore'
     }
-    constructor(props) {
-        super(props)
-        this.handleChange = this.handleChange.bind(this)
-    }
-    componentDidMount() {
+    fetchPosts(){
         const { selectedCategory } = this.props
-        ReadableAPI.getAllCategories().then((categories) => {
-            this.setState({ categories: [...this.state.categories, ...categories ] })})
         this.props.dispatch(fetchPostsIfNeeded(selectedCategory))
     }
-    handleChange(nextCategory) {
-        this.props.dispatch(selectCategory(nextCategory))
-        this.props.dispatch(fetchPostsIfNeeded(nextCategory))
+    componentDidMount() {
+       this.fetchPosts()
+    }
+    componentDidUpdate() {
+        this.fetchPosts()
+    }
+
+    handleSelectPost(nextPost) {
+        console.log(nextPost)
+        this.props.dispatch(selectPost(nextPost))
     }
 
     render() {
-        const { posts } = this.props
+        const { posts, selectedCategory, selectedPost } = this.props
         return (
             <div>
-                {this.state.categories.map((category) => (
-                    <Link
-                        to={`/${category}`}
-                        onClick={() => this.handleChange(category)}
-                        key={category}>{category}
-                    </Link>
-                ))}
+
                 <Picker
                     value={this.state.sortMethod}
                     options={this.state.sortMethods}
@@ -57,11 +51,22 @@ export class Posts extends Component {
                         return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
                     }).sort((post_1,post_2)=>{
                         return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
-                    }).map((post, i) => <li key={i}>{post.title}</li>)}
+                    }).map((post) =>{
+                        return(
+                            <div key={post.id}>
+                                <Link
+                                    to={`/${selectedCategory}`}
+                                    onClick={() => this.handleSelectPost(post.id)}>
+                                    {post.title}
+                                </Link>
+                                {selectedPost === post.id && (
+                                    <Post/>)}
+                            </div>
+                        )})}
                 </ul>
-                {this.props.posts.length > 0 &&
+              {/*  {this.props.posts.length > 0 &&
                     <Post post_id={this.props.posts[0].id}/>
-                }
+                }*/}
                 <div className="open-search">
                     <Link
                         to='/create'
@@ -82,7 +87,7 @@ Posts.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { selectedCategory, postsByCategory } = state
+    const { selectedCategory, postsByCategory, selectedPost } = state
     const {
         isFetching,
         lastUpdated,
@@ -94,6 +99,7 @@ function mapStateToProps(state) {
 
     return {
         selectedCategory,
+        selectedPost,
         posts,
         isFetching,
         lastUpdated
