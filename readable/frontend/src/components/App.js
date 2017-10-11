@@ -9,7 +9,7 @@ import {
     selectCategory,
 } from '../actions/post'
 import * as ReadableAPI from "../utils/ReadableAPI";
-
+import PostForm from "./PostForm";
 
 
 class AsyncApp extends Component {
@@ -42,9 +42,7 @@ class AsyncApp extends Component {
                     <Posts/>
                 )}/>
                 <Route exact path='/edit' render={() => (
-                    <div>
-                       Create
-                    </div>
+                    <PostForm/>
                 )}/>
                 <div className="open-search">
                     <Link
