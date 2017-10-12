@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Post from './Post'
+import Comments from './Comments'
 import {
     fetchPostsIfNeeded
 } from '../actions/post'
@@ -39,14 +39,12 @@ export class Posts extends Component {
     onDeletePost(post) {
         ReadableAPI.deletePost(post.id)
         this.props.dispatch(fetchPostsIfNeeded(post))
-        console.log("delete post")
     }
 
     render() {
         const { posts, selectedCategory, selectedPost } = this.props
         return (
             <div>
-
                 <Picker
                     value={this.state.sortMethod}
                     options={this.state.sortMethods}
@@ -66,17 +64,17 @@ export class Posts extends Component {
                                     <p>{post.author}</p>
                                     <p>{post.body}</p>
                                     <p>{post.voteScore}</p>
+                                    <Link
+                                        to={`/${selectedCategory}/${post.id}`}
+                                        onClick={() => this.handleSelectPost(post.id)}>
+                                        Show comments
+                                    </Link>
+                                    {selectedPost === post.id && (
+                                        <Comments/>)}
                                 </div>
-                                <Link
-                                    to={`/${selectedCategory}/${post.id}`}
-                                    onClick={() => this.handleSelectPost(post.id)}>
-                                    Show comments
-                                </Link>
                                 <button onClick={() => this.onDeletePost(post)} className='post-remove'>
                                     Remove
                                 </button>
-                                {selectedPost === post.id && (
-                                    <Post/>)}
                             </li>
                         )})}
                 </ul>

@@ -2,7 +2,7 @@
  * Created by z0017fjy on 26.09.2017.
  */
 import React, { Component } from 'react'
-import Posts from '../components/Posts'
+import Posts from './Posts'
 import {Link, Route} from "react-router-dom";
 import {connect} from "react-redux";
 import {

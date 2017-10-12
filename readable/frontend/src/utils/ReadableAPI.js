@@ -47,3 +47,12 @@ export const deletePost = (post_id) =>
             'Content-Type': 'application/json'
         }
     }).then(res => res.json())
+
+export const deleteComment = (comment_id) =>
+    fetch(`${api}/comments/${comment_id}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
