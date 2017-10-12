@@ -14,6 +14,7 @@ import {Link} from "react-router-dom";
 import Picker from "./Picker";
 import {dispatch} from "redux";
 import {connect} from "react-redux";
+import * as ReadableAPI from "../utils/ReadableAPI";
 
 export class Posts extends Component {
     state={
@@ -35,6 +36,11 @@ export class Posts extends Component {
         console.log(nextPost)
         this.props.dispatch(selectPost(nextPost))
     }
+    onDeletePost(post) {
+        ReadableAPI.deletePost(post.id)
+        this.props.dispatch(fetchPostsIfNeeded(post))
+        console.log("delete post")
+    }
 
     render() {
         const { posts, selectedCategory, selectedPost } = this.props
@@ -46,27 +52,39 @@ export class Posts extends Component {
                     options={this.state.sortMethods}
                     onChange={(itemValue, itemIndex) => this.setState({sortMethod: itemValue})}
                 />
-                <ul>
+                <ul className='post-list'>
                     {posts.filter((post)=>{
                         return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
                     }).sort((post_1,post_2)=>{
                         return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
                     }).map((post) =>{
                         return(
-                            <div key={post.id}>
+                            <li key={post.id} className='post-list-item'>
+                                <div className='post-details'>
+                                    <h3>{post.title}</h3>
+                                    <p>{post.category}</p>
+                                    <p>{post.author}</p>
+                                    <p>{post.body}</p>
+                                    <p>{post.voteScore}</p>
+                                </div>
                                 <Link
                                     to={`/${selectedCategory}/${post.id}`}
                                     onClick={() => this.handleSelectPost(post.id)}>
-                                    {post.title}
+                                    Show comments
                                 </Link>
+                                <button onClick={() => this.onDeletePost(post)} className='post-remove'>
+                                    Remove
+                                </button>
                                 {selectedPost === post.id && (
                                     <Post/>)}
-                            </div>
+                            </li>
                         )})}
                 </ul>
             </div>
         )
     }
+
+
 }
 
 Posts.propTypes = {
