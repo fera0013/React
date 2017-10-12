@@ -3,7 +3,13 @@
  */
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
-import Picker from "./Picker";
+import v1 from 'uuid/v1';
+import {dispatch} from "redux";
+import {
+    fetchPostsIfNeeded
+} from '../actions/post'
+import {connect} from "react-redux";
+import PropTypes from 'prop-types'
 
 class PostForm extends React.Component {
     constructor(props) {
@@ -11,14 +17,14 @@ class PostForm extends React.Component {
         this.state = {
             categories:[],
             post:{
-                attribute:"",
-                id:"",
-                timestamp:"",
-                title:"",
-                body:"",
-                author:"",
-                category:"",
-                voteScore:1,
+                attribute:"attribute",
+                id:"id",
+                timestamp:"timestamp",
+                title:"title",
+                body:"body",
+                author:"author",
+                category:"category",
+                voteScore:"1",
                 deleted: false
             }
         };
@@ -40,9 +46,12 @@ class PostForm extends React.Component {
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
         event.preventDefault();
-        Date.now()
+        let new_post = this.state.post
+        new_post.id= v1()
+        new_post.timestamp=Date.now()
+        ReadableAPI.createPost(new_post)
+        this.props.dispatch(fetchPostsIfNeeded(new_post.category))
     }
 
     render() {
@@ -71,9 +80,19 @@ class PostForm extends React.Component {
                 <br/>
                 <label for="score"> Vote: </label>
                 <input id="score" name="voteScore"  type="text" value={this.state.voteScore} onChange={this.handleChange} />
+                <br/>
+                <input type="submit" value="Submit" />
             </form>
         );
     }
 }
 
-export default PostForm
+PostForm.propTypes = {
+    dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+
+}
+
+export default connect(mapStateToProps)(PostForm)

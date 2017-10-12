@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch'
 import * as ReadableAPI from "../utils/ReadableAPI";
-
 export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_CATEGORY = 'SELECT_CATEGORY'
