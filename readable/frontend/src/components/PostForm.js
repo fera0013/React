@@ -10,6 +10,7 @@ import {
 } from '../actions/post'
 import {connect} from "react-redux";
 import PropTypes from 'prop-types'
+import {Link} from "react-router-dom";
 
 class PostForm extends React.Component {
     constructor(props) {
@@ -56,33 +57,26 @@ class PostForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label for="attribute"> Attribute: </label>
-                <input id="attribute" name="attribute" type="text" value={this.state.post.attribute} onChange={this.handleChange}/>
-                <br/>
-                <label for="title">title:</label>
-                <input id="title" name="title" type="text" value={this.state.post.title}  onChange={this.handleChange}/>
-                <br/>
-                <label for="body">body:</label>
-                <textarea id="body" name="body" value={this.state.post.body} onChange={this.handleChange}/>
-                <br/>
-                <label for="author">  author:  </label>
-                <input id="author" name="author" type="text" value={this.state.post.author}  onChange={this.handleChange}/>
-                <br/>
-                <label for="category">Category:</label>
-                 <select id="category" name="category" onChange={this.handleChange}  value={this.state.post.category}>
-                  {this.state.categories.map(option => (
-                      <option value={option} key={option}>
-                          {option}
-                      </option>
-                  ))}
-                 </select>
-                <br/>
-                <label for="score"> Vote: </label>
-                <input id="score" name="voteScore"  type="text" value={this.state.voteScore} onChange={this.handleChange} />
-                <br/>
-                <input type="submit" value="Submit" />
-            </form>
+            <div>
+                <Link className='close-create-contact' to='/'>Close</Link>
+                <form onSubmit={this.handleSubmit} className='create-post-form'>
+                    <div className='create-post-details'>
+                        <input  name="attribute" type="text" placeholder="attribute" value={this.state.post.attribute} onChange={this.handleChange}/>
+                        <input placeholder="title" name="title" type="text" value={this.state.post.title}  onChange={this.handleChange}/>
+                        <textarea placeholder="body" name="body" value={this.state.post.body} onChange={this.handleChange}/>
+                        <input placeholder="author" name="author" type="text" value={this.state.post.author}  onChange={this.handleChange}/>
+                         <select placeholder="category" name="category" onChange={this.handleChange}  value={this.state.post.category}>
+                          {this.state.categories.map(option => (
+                              <option value={option} key={option}>
+                                  {option}
+                              </option>
+                          ))}
+                         </select>
+                        <input placeholder="score" name="voteScore"  type="text" value={this.state.voteScore} onChange={this.handleChange} />
+                        <input type="submit" value="Submit" />
+                    </div>
+                </form>
+            </div>
         );
     }
 }
