@@ -6,7 +6,8 @@ import PropTypes from 'prop-types'
 import Comments from './Comments'
 import {
     selectCategory,
-    fetchPostsIfNeeded
+    fetchPostsIfNeeded,
+    removePost
 } from '../actions/post'
 import {
     selectPost
@@ -45,15 +46,14 @@ export class ListPosts extends Component {
         this.props.dispatch(selectPost(nextPost))
     }
     onDeletePost(post) {
-        ReadableAPI.deletePost(post.id)
-        this.props.dispatch(fetchPostsIfNeeded(post))
+        this.props.dispatch(removePost(post.id))
     }
     handleSelectCategory(nextCategory) {
         this.props.dispatch(selectCategory(nextCategory))
 
     }
     render() {
-        const { posts, selectedCategory, selectedPost } = this.props
+        const { posts, selectedCategory} = this.props
         return (
             <div className='list-posts'>
                 {this.state.categories.map((category) => (
@@ -87,7 +87,6 @@ export class ListPosts extends Component {
                                         onClick={() => this.handleSelectPost(post.id)}>
                                         Show comments
                                     </Link>
-                                    {console.log(this.props.match.params.post)}
                                     {this.props.match.params.post!=='undefined'&&
                                     this.props.match.params.post=== post.id &&
                                         <Comments/>}
