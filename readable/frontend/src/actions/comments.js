@@ -3,7 +3,6 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const SELECT_POST = 'SELECT_POST'
-export const INVALIDATE_POST = 'INVALIDATE_POST'
 
 
 
@@ -14,12 +13,6 @@ export function selectPost(post_id) {
     }
 }
 
-export function invalidatePost(post_id) {
-    return {
-        type: INVALIDATE_POST,
-        post_id
-    }
-}
 
 function requestComments(post_id) {
     return {

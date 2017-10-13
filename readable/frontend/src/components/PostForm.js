@@ -4,7 +4,6 @@
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import v1 from 'uuid/v1';
-import {dispatch} from "redux";
 import {
     fetchPostsIfNeeded
 } from '../actions/post'

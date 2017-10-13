@@ -1,10 +1,8 @@
-import fetch from 'isomorphic-fetch'
 import * as ReadableAPI from "../utils/ReadableAPI";
 export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_CATEGORY = 'SELECT_CATEGORY'
-export const INVALIDATE_CATEGORY = 'INVALIDATE_CATEGORY'
-
+export const DELETE_POST = 'DELETE_POST'
 
 
 export function selectCategory(category) {
@@ -14,12 +12,7 @@ export function selectCategory(category) {
     }
 }
 
-export function invalidateCategory(category) {
-    return {
-        type: INVALIDATE_CATEGORY,
-        category
-    }
-}
+
 
 function requestPosts(category) {
     return {
@@ -34,6 +27,13 @@ function receivePosts(category, posts) {
         category,
         posts: posts,
         receivedAt: Date.now()
+    }
+}
+
+function deletePost(post_id){
+    return{
+        type: DELETE_POST,
+        post: post_id
     }
 }
 
@@ -62,3 +62,14 @@ export function fetchPostsIfNeeded(category) {
         }
     }
 }
+
+export function removePost(post_id){
+    return (dispatch) => {
+        dispatch(deletePost(post_id))
+        ReadableAPI.deletePost(post_id).then(()=>{
+            return dispatch(fetchPosts())
+        })
+    }
+}
+
+

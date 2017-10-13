@@ -2,10 +2,8 @@
  * Created by z0017fjy on 26.09.2017.
  */
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import {
     fetchCommentsIfNeeded,
-    selectPost
 } from '../actions/comments'
 import { connect } from 'react-redux'
 import * as ReadableAPI from "../utils/ReadableAPI";

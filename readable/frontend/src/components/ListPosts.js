@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Comments from './Comments'
 import {
+    selectCategory,
     fetchPostsIfNeeded
 } from '../actions/post'
 import {
@@ -16,16 +17,23 @@ import {dispatch} from "redux";
 import {connect} from "react-redux";
 import * as ReadableAPI from "../utils/ReadableAPI";
 
-export class Posts extends Component {
+export class ListPosts extends Component {
     state={
         sortMethods:['voteScore','timestamp'],
-        sortMethod: 'voteScore'
+        sortMethod: 'voteScore',
+        categories:['all']
+    }
+    constructor(props) {
+        super(props)
+        this.handleSelectCategory = this.handleSelectCategory.bind(this)
     }
     fetchPosts(){
         const { selectedCategory } = this.props
         this.props.dispatch(fetchPostsIfNeeded(selectedCategory))
     }
     componentDidMount() {
+        ReadableAPI.getAllCategories().then((categories) => {
+            this.setState({ categories: [...this.state.categories, ...categories ] })})
        this.fetchPosts()
     }
     componentDidUpdate() {
@@ -40,11 +48,21 @@ export class Posts extends Component {
         ReadableAPI.deletePost(post.id)
         this.props.dispatch(fetchPostsIfNeeded(post))
     }
+    handleSelectCategory(nextCategory) {
+        this.props.dispatch(selectCategory(nextCategory))
 
+    }
     render() {
         const { posts, selectedCategory, selectedPost } = this.props
         return (
-            <div>
+            <div className='list-posts'>
+                {this.state.categories.map((category) => (
+                    <Link
+                        to={`/${category}`}
+                        onClick={() => this.handleSelectCategory(category)}
+                        key={category}>{category}
+                    </Link>
+                ))}
                 <Picker
                     value={this.state.sortMethod}
                     options={this.state.sortMethods}
@@ -69,8 +87,10 @@ export class Posts extends Component {
                                         onClick={() => this.handleSelectPost(post.id)}>
                                         Show comments
                                     </Link>
-                                    {selectedPost === post.id && (
-                                        <Comments/>)}
+                                    {console.log(this.props.match.params.post)}
+                                    {this.props.match.params.post!=='undefined'&&
+                                    this.props.match.params.post=== post.id &&
+                                        <Comments/>}
                                 </div>
                                 <button onClick={() => this.onDeletePost(post)} className='post-remove'>
                                     Remove
@@ -78,6 +98,12 @@ export class Posts extends Component {
                             </li>
                         )})}
                 </ul>
+                <div className="open-search">
+                    <Link
+                        to='/edit'
+                        className='add-contact'
+                    >Create new post</Link>
+                </div>
             </div>
         )
     }
@@ -85,7 +111,7 @@ export class Posts extends Component {
 
 }
 
-Posts.propTypes = {
+ListPosts.propTypes = {
     selectedCategory: PropTypes.string.isRequired,
     posts: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
@@ -113,4 +139,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Posts)
+export default connect(mapStateToProps)(ListPosts)

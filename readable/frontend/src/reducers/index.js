@@ -1,14 +1,13 @@
 import { combineReducers } from 'redux'
 import {
     SELECT_CATEGORY,
-    INVALIDATE_CATEGORY,
     REQUEST_POSTS,
-    RECEIVE_POSTS
+    RECEIVE_POSTS,
+    DELETE_POST
 } from '../actions/post'
 
 import {
     SELECT_POST,
-    INVALIDATE_POST,
     REQUEST_COMMENTS,
     RECEIVE_COMMENTS
 } from '../actions/comments'
@@ -31,10 +30,6 @@ function posts(
     action
 ) {
     switch (action.type) {
-        case INVALIDATE_CATEGORY:
-            return Object.assign({}, state, {
-                didInvalidate: true
-            })
         case REQUEST_POSTS:
             return Object.assign({}, state, {
                 isFetching: true,
@@ -54,12 +49,12 @@ function posts(
 
 function postsByCategory(state = {}, action) {
     switch (action.type) {
-        case INVALIDATE_CATEGORY:
         case RECEIVE_POSTS:
         case REQUEST_POSTS:
             return Object.assign({}, state, {
                 [action.category]: posts(state[action.category], action)
             })
+        case DELETE_POST:
         default:
             return state
     }
@@ -102,7 +97,6 @@ function comments(
 
 function commentsByPost(state = {}, action) {
     switch (action.type) {
-        case INVALIDATE_POST:
         case RECEIVE_COMMENTS:
         case REQUEST_COMMENTS:
             return Object.assign({}, state, {
