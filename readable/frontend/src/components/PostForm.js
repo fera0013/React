@@ -12,23 +12,22 @@ import PropTypes from 'prop-types'
 import {Link} from "react-router-dom";
 
 class PostForm extends React.Component {
+    state = {
+        categories:[],
+        post:{
+            attribute:"",
+            id:"",
+            timestamp:"",
+            title:"",
+            body:"",
+            author:"",
+            category:"",
+            voteScore:"",
+            deleted: false
+        }
+    }
     constructor(props) {
         super(props);
-        this.state = {
-            categories:[],
-            post:{
-                attribute:"attribute",
-                id:"id",
-                timestamp:"timestamp",
-                title:"title",
-                body:"body",
-                author:"author",
-                category:"category",
-                voteScore:"1",
-                deleted: false
-            }
-        };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -72,7 +71,7 @@ class PostForm extends React.Component {
                           ))}
                          </select>
                         <input placeholder="score" name="voteScore"  type="text" value={this.state.voteScore} onChange={this.handleChange} />
-                        <input type="submit" value="Submit" />
+                        <button>Submit</button>
                     </div>
                 </form>
             </div>

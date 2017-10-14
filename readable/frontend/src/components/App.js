@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import Posts from './ListPosts'
 import {Route} from "react-router-dom";
 import PostForm from "./PostForm";
+import CommentForm from "./CommentForm";
 
 
 class AsyncApp extends Component {
@@ -12,7 +13,7 @@ class AsyncApp extends Component {
         return (
             <div>
                 <Route path='/:category?/:post?' component={Posts}/>
-                <Route exact path='/edit' component={PostForm}/>
+                <Route exact path='/editPost' component={PostForm}/>
             </div>
         )
     }

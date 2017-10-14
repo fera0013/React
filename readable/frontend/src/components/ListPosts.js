@@ -12,11 +12,12 @@ import {
 import {
     selectPost
 } from '../actions/comments'
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import Picker from "./Picker";
 import {dispatch} from "redux";
 import {connect} from "react-redux";
 import * as ReadableAPI from "../utils/ReadableAPI";
+import CommentForm from "./CommentForm";
 
 export class ListPosts extends Component {
     state={
@@ -42,7 +43,6 @@ export class ListPosts extends Component {
     }
 
     handleSelectPost(nextPost) {
-        console.log(nextPost)
         this.props.dispatch(selectPost(nextPost))
     }
     onDeletePost(post) {
@@ -90,6 +90,9 @@ export class ListPosts extends Component {
                                     {this.props.match.params.post!=='undefined'&&
                                     this.props.match.params.post=== post.id &&
                                         <Comments/>}
+                                    {this.props.match.params.edit!=='undefined'&&
+                                    this.props.match.params.post=== post.id &&
+                                    <Route exact path='/:category/:post/edit' component={CommentForm}/>}
                                 </div>
                                 <button onClick={() => this.onDeletePost(post)} className='post-remove'>
                                     Remove
@@ -99,8 +102,7 @@ export class ListPosts extends Component {
                 </ul>
                 <div className="open-search">
                     <Link
-                        to='/edit'
-                        className='add-contact'
+                        to='/editPost'
                     >Create new post</Link>
                 </div>
             </div>
