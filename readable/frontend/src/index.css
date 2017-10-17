@@ -167,3 +167,7 @@ body, .app {
   cursor: pointer;
   outline: none;
 }
+
+.vote-score {
+  display: flex;
+}

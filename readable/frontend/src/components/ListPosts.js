@@ -18,6 +18,7 @@ import {dispatch} from "redux";
 import {connect} from "react-redux";
 import * as ReadableAPI from "../utils/ReadableAPI";
 import CommentForm from "./CommentForm";
+import {Vote} from "./Vote";
 
 export class ListPosts extends Component {
     state={
@@ -81,7 +82,11 @@ export class ListPosts extends Component {
                                     <p>{post.category}</p>
                                     <p>{post.author}</p>
                                     <p>{post.body}</p>
-                                    <p>{post.voteScore}</p>
+                                    <Vote
+                                        element={post}
+                                        voteUp = {ReadableAPI.upVotePost}
+                                        voteDown = {ReadableAPI.downVotePost}
+                                    />
                                     <Link
                                         to={`/${selectedCategory}/${post.id}`}
                                         onClick={() => this.handleSelectPost(post.id)}>

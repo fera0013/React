@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import {Link} from "react-router-dom";
 import { withRouter } from 'react-router'
+import {Vote} from "./Vote";
 
 
 export class Comments extends Component {
@@ -40,7 +41,11 @@ export class Comments extends Component {
                                 <p>{comment.attribute}</p>
                                 <p>{comment.body}</p>
                                 <p>{comment.author}</p>
-                                <p>{comment.voteScore}</p>
+                                <Vote
+                                element={comment}
+                                voteUp = {ReadableAPI.upVoteComment}
+                                voteDown = {ReadableAPI.downVoteComment}
+                                />
                             </div>
                             <button onClick={() => this.onDeleteComment(comment)} className='post-remove'>
                                 Remove
