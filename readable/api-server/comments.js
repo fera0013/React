@@ -17,7 +17,7 @@ const defaultData = {
     id: '8tu4bsun805n8un48ve89',
     parentId: "8xf0y6ziyjabvozdd253nd",
     timestamp: 1469479767190,
-    body: 'Comments. Are. Cool.',
+    body: 'ListComments. Are. Cool.',
     author: 'thingone',
     voteScore: -5,
     deleted: false,

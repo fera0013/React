@@ -8,11 +8,10 @@ import {
 import { connect } from 'react-redux'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import {Link} from "react-router-dom";
-import { withRouter } from 'react-router'
 import {Vote} from "./Vote";
 
 
-export class Comments extends Component {
+export class ListComments extends Component {
     constructor(props) {
         super(props)
     }
@@ -80,4 +79,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Comments)
+export default connect(mapStateToProps)(ListComments)

@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Comments from './Comments'
+import Comments from './ListComments'
 import {
     selectCategory,
     fetchPostsIfNeeded,

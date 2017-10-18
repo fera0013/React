@@ -2,7 +2,7 @@
  * Created by z0017fjy on 26.09.2017.
  */
 import React, { Component } from 'react'
-import Comments from './Comments'
+import Comments from './ListComments'
 import {
     removePost
 } from '../actions/post'
