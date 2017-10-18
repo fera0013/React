@@ -1,5 +1,5 @@
 import * as ReadableAPI from "../utils/ReadableAPI";
-
+export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const SELECT_POST = 'SELECT_POST'
@@ -13,6 +13,12 @@ export function selectPost(post_id) {
     }
 }
 
+function deleteComment(comment_id){
+    return{
+        type: DELETE_COMMENT,
+        comment: comment_id
+    }
+}
 
 function requestComments(post_id) {
     return {
@@ -53,5 +59,14 @@ export function fetchCommentsIfNeeded(post_id) {
         if (shouldFetchComments(getState(), post_id)) {
             return dispatch(fetchComments(post_id))
         }
+    }
+}
+
+export function removeComment(comment_id){
+    return (dispatch) => {
+        dispatch(deleteComment(comment_id))
+        ReadableAPI.deleteComment(comment_id).then(()=>{
+            return dispatch(fetchComments())
+        })
     }
 }

@@ -3,13 +3,14 @@ import {
     SELECT_CATEGORY,
     REQUEST_POSTS,
     RECEIVE_POSTS,
-    DELETE_POST
+    DELETE_POST,
 } from '../actions/post'
 
 import {
     SELECT_POST,
     REQUEST_COMMENTS,
-    RECEIVE_COMMENTS
+    RECEIVE_COMMENTS,
+    DELETE_COMMENT
 } from '../actions/comments'
 
 function selectedCategory(state = 'all', action) {
@@ -90,6 +91,7 @@ function comments(
                 items: action.comments,
                 lastUpdated: action.receivedAt
             })
+        case DELETE_COMMENT:
         default:
             return state
     }
