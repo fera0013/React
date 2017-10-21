@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import {
     selectCategory,
     fetchPostsIfNeeded,
-    removePost
 } from '../actions/post'
 import Picker from "./Picker";
 import {connect} from "react-redux";

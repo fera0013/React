@@ -15,6 +15,9 @@ import {Vote} from "./Vote";
 import * as ReadableAPI from "../utils/ReadableAPI";
 
 export class Post extends Component {
+    state={
+        showComments:false
+    }
     constructor(props) {
         super(props)
         this.onDeletePost = this.onDeletePost.bind(this)
@@ -36,9 +39,25 @@ export class Post extends Component {
                         voteUp = {ReadableAPI.upVotePost}
                         voteDown = {ReadableAPI.downVotePost}
                     />
-                    <ListComments
-                        post={post}
-                    />
+                    {this.state.showComments ?
+                        <div>
+                            <Link
+                                className='close-create-contact'
+                                to=''
+                                onClick={()=>{this.setState({showComments:false})}}>
+                                Hide comments
+                            </Link>
+                            <ListComments
+                                post={post}
+                            />
+                        </div>
+                        :
+                        <Link
+                            to=''
+                            onClick={()=>{this.setState({showComments:true})}}>
+                            Show comments
+                        </Link>
+                    }
                 </div>
                 <button onClick={() => this.onDeletePost(post)} className='post-remove'>
                     Remove
