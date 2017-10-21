@@ -4,12 +4,10 @@
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import v1 from 'uuid/v1';
-import {connect} from "react-redux";
-import PropTypes from 'prop-types'
 import {Link} from "react-router-dom";
 
 
-class CommentForm extends React.Component {
+export default class CommentForm extends React.Component {
     state = {
     comment:{
         attribute:"",
@@ -48,29 +46,17 @@ class CommentForm extends React.Component {
 
     render() {
         return (
-            <div>
-                <Link className='close-create-contact' to='/'>Close</Link>
-                <form onSubmit={this.handleSubmit} className='create-post-form'>
-                    <div className='create-post-details'>
-                        <input  name="attribute" type="text" placeholder="attribute" value={this.state.comment.attribute} onChange={this.handleChange}/>
-                        <input placeholder="title" name="title" type="text" value={this.state.comment.title}  onChange={this.handleChange}/>
-                        <textarea placeholder="body" name="body" value={this.state.comment.body} onChange={this.handleChange}/>
-                        <input placeholder="author" name="author" type="text" value={this.state.comment.author}  onChange={this.handleChange}/>
-                        <input placeholder="score" name="voteScore"  type="text" value={this.state.comment.voteScore} onChange={this.handleChange} />
-                        <button>Submit</button>
-                    </div>
-                </form>
-            </div>
+            <form onSubmit={this.handleSubmit} className='create-post-form'>
+                <div className='create-post-details'>
+                    <input  name="attribute" type="text" placeholder="attribute" value={this.state.comment.attribute} onChange={this.handleChange}/>
+                    <input placeholder="title" name="title" type="text" value={this.state.comment.title}  onChange={this.handleChange}/>
+                    <textarea placeholder="body" name="body" value={this.state.comment.body} onChange={this.handleChange}/>
+                    <input placeholder="author" name="author" type="text" value={this.state.comment.author}  onChange={this.handleChange}/>
+                    <input placeholder="score" name="voteScore"  type="text" value={this.state.comment.voteScore} onChange={this.handleChange} />
+                    <button>Submit</button>
+                </div>
+            </form>
         );
     }
 }
 
-CommentForm.propTypes = {
-    dispatch: PropTypes.func.isRequired
-}
-
-function mapStateToProps(state) {
-
-}
-
-export default connect(mapStateToProps)(CommentForm)

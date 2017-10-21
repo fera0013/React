@@ -9,22 +9,20 @@ import {
     fetchPostsIfNeeded,
     removePost
 } from '../actions/post'
-import {
-    selectPost
-} from '../actions/comments'
-import {Link, Route} from "react-router-dom";
 import Picker from "./Picker";
-import {dispatch} from "redux";
 import {connect} from "react-redux";
 import * as ReadableAPI from "../utils/ReadableAPI";
 import CommentForm from "./CommentForm";
 import {Vote} from "./Vote";
+import {Link} from "react-router-dom";
+import PostForm from "./PostForm";
 
 export class ListPosts extends Component {
     state={
         sortMethods:['voteScore','timestamp'],
         sortMethod: 'voteScore',
-        categories:['all']
+        categories:['all'],
+        editFormOpen:false
     }
     constructor(props) {
         super(props)
@@ -43,9 +41,6 @@ export class ListPosts extends Component {
         this.fetchPosts()
     }
 
-    handleSelectPost(nextPost) {
-        this.props.dispatch(selectPost(nextPost))
-    }
     onDeletePost(post) {
         this.props.dispatch(removePost(post.id))
     }
@@ -54,14 +49,15 @@ export class ListPosts extends Component {
 
     }
     render() {
-        const { posts, selectedCategory} = this.props
+        const { posts} = this.props
         return (
             <div className='list-posts'>
                 {this.state.categories.map((category) => (
-                    <Link
-                        to={`/${category}`}
-                        onClick={() => this.handleSelectCategory(category)}
-                        key={category}>{category}
+                    //ToDo: Link to route /:category
+                    <Link to="">
+                        <button onClick={() => this.handleSelectCategory(category)} key={category}>
+                            {category}
+                        </button>
                     </Link>
                 ))}
                 <Picker
@@ -87,17 +83,10 @@ export class ListPosts extends Component {
                                         voteUp = {ReadableAPI.upVotePost}
                                         voteDown = {ReadableAPI.downVotePost}
                                     />
-                                    <Link
-                                        to={`/${selectedCategory}/${post.id}`}
-                                        onClick={() => this.handleSelectPost(post.id)}>
-                                        Show comments
-                                    </Link>
-                                    {this.props.match.params.post!=='undefined'&&
-                                    this.props.match.params.post=== post.id &&
-                                        <Comments/>}
-                                    {this.props.match.params.edit!=='undefined'&&
-                                    this.props.match.params.post=== post.id &&
-                                    <Route exact path='/:category/:post/edit' component={CommentForm}/>}
+                                    <Comments
+                                        post={post}
+                                    />
+                                    <CommentForm/>
                                 </div>
                                 <button onClick={() => this.onDeletePost(post)} className='post-remove'>
                                     Remove
@@ -105,10 +94,24 @@ export class ListPosts extends Component {
                             </li>
                         )})}
                 </ul>
-                <div className="open-search">
-                    <Link
-                        to='/editPost'
-                    >Create new post</Link>
+                <div>
+                    {this.state.editFormOpen ?
+                        <div>
+                            <Link
+                                className='close-create-contact'
+                                to=''
+                                onClick={()=>{this.setState({editFormOpen:false})}}>
+                                Close
+                            </Link>
+                            <PostForm/>
+                        </div>
+                            :
+                        <Link
+                            to=''
+                            onClick={()=>{this.setState({editFormOpen:true})}}>
+                            Create new post
+                        </Link>
+                    }
                 </div>
             </div>
         )

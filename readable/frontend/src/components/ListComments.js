@@ -6,27 +6,20 @@ import {
     fetchCommentsIfNeeded,
 } from '../actions/comments'
 import { connect } from 'react-redux'
-import {Link} from "react-router-dom";
 import Comment from "./Comment";
 
 
 export class ListComments extends Component {
-    constructor(props) {
-        super(props)
-    }
     updateComments(){
-        const { dispatch,selectedPost} = this.props
-        dispatch(fetchCommentsIfNeeded(selectedPost))
+        const { dispatch} = this.props
+        dispatch(fetchCommentsIfNeeded(this.props.post.id))
+        console.log("comments:" + this.props.comments)
     }
     componentDidMount() {
        this.updateComments()
     }
     render() {
-        //ToDo: Check why this.props.match is undefined here
-        const category =window.location.href.split('/')[3]
-        const post_id = window.location.href.split('/')[4]
         return (
-
             <div className='list-posts'>
                 <ul  className='post-list'>
                     {this.props.comments.map((comment) =>
@@ -35,9 +28,6 @@ export class ListComments extends Component {
                         />
                     )}
                 </ul>
-                <div className="open-search">
-                    <Link to={`/${category}/${post_id}/edit`}>add comment</Link>
-                </div>
             </div>
         )
     }

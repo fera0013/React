@@ -7,11 +7,9 @@ import v1 from 'uuid/v1';
 import {
     fetchPostsIfNeeded
 } from '../actions/post'
-import {connect} from "react-redux";
-import PropTypes from 'prop-types'
 import {Link} from "react-router-dom";
 
-class PostForm extends React.Component {
+export default class PostForm extends React.Component {
     state = {
         categories:[],
         post:{
@@ -56,7 +54,6 @@ class PostForm extends React.Component {
     render() {
         return (
             <div>
-                <Link className='close-create-contact' to='/'>Close</Link>
                 <form onSubmit={this.handleSubmit} className='create-post-form'>
                     <div className='create-post-details'>
                         <input  name="attribute" type="text" placeholder="attribute" value={this.state.post.attribute} onChange={this.handleChange}/>
@@ -79,12 +76,3 @@ class PostForm extends React.Component {
     }
 }
 
-PostForm.propTypes = {
-    dispatch: PropTypes.func.isRequired
-}
-
-function mapStateToProps(state) {
-
-}
-
-export default connect(mapStateToProps)(PostForm)

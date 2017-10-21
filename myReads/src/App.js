@@ -4,7 +4,6 @@ import './App.css'
 import Bookshelf from './Bookshelf'
 import SearchBooks from './SearchBooks'
 import { Link } from 'react-router-dom'
-import { Route } from 'react-router-dom'
 
 class BooksApp extends React.Component {
   state = {
