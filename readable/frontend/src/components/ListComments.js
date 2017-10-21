@@ -7,9 +7,14 @@ import {
 } from '../actions/comments'
 import { connect } from 'react-redux'
 import Comment from "./Comment";
+import Link from "react-router-dom/es/Link";
+import CommentForm from "./CommentForm";
 
 
 export class ListComments extends Component {
+    state={
+        editFormOpen:false
+    }
     updateComments(){
         const { dispatch} = this.props
         dispatch(fetchCommentsIfNeeded(this.props.post.id))
@@ -28,7 +33,27 @@ export class ListComments extends Component {
                         />
                     )}
                 </ul>
+                <div>
+                    {this.state.editFormOpen ?
+                        <div>
+                            <Link
+                                className='close-create-contact'
+                                to=''
+                                onClick={()=>{this.setState({editFormOpen:false})}}>
+                                Close
+                            </Link>
+                            <CommentForm/>
+                        </div>
+                        :
+                        <Link
+                            to=''
+                            onClick={()=>{this.setState({editFormOpen:true})}}>
+                            Create new comment
+                        </Link>
+                    }
+                </div>
             </div>
+
         )
     }
 }

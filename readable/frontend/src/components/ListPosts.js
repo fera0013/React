@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Comments from './ListComments'
 import {
     selectCategory,
     fetchPostsIfNeeded,
@@ -12,10 +11,9 @@ import {
 import Picker from "./Picker";
 import {connect} from "react-redux";
 import * as ReadableAPI from "../utils/ReadableAPI";
-import CommentForm from "./CommentForm";
-import {Vote} from "./Vote";
 import {Link} from "react-router-dom";
 import PostForm from "./PostForm";
+import Post from "./Post";
 
 export class ListPosts extends Component {
     state={
@@ -41,9 +39,6 @@ export class ListPosts extends Component {
         this.fetchPosts()
     }
 
-    onDeletePost(post) {
-        this.props.dispatch(removePost(post.id))
-    }
     handleSelectCategory(nextCategory) {
         this.props.dispatch(selectCategory(nextCategory))
 
@@ -72,26 +67,9 @@ export class ListPosts extends Component {
                         return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
                     }).map((post) =>{
                         return(
-                            <li key={post.id} className='post-list-item'>
-                                <div className='post-details'>
-                                    <h3>{post.title}</h3>
-                                    <p>{post.category}</p>
-                                    <p>{post.author}</p>
-                                    <p>{post.body}</p>
-                                    <Vote
-                                        element={post}
-                                        voteUp = {ReadableAPI.upVotePost}
-                                        voteDown = {ReadableAPI.downVotePost}
-                                    />
-                                    <Comments
-                                        post={post}
-                                    />
-                                    <CommentForm/>
-                                </div>
-                                <button onClick={() => this.onDeletePost(post)} className='post-remove'>
-                                    Remove
-                                </button>
-                            </li>
+                         <Post
+                             post={post}
+                         />
                         )})}
                 </ul>
                 <div>
