@@ -10,22 +10,23 @@ import {
 import {Link} from "react-router-dom";
 
 export default class PostForm extends React.Component {
-    state = {
-        categories:[],
-        post:{
-            attribute:"",
-            id:"",
-            timestamp:"",
-            title:"",
-            body:"",
-            author:"",
-            category:"",
-            voteScore:"",
-            deleted: false
-        }
-    }
     constructor(props) {
         super(props);
+        this.state = {
+            categories:[],
+            //ToDo: Create post class
+            post:{
+                attribute:"",
+                id:"",
+                timestamp:"",
+                title:"",
+                body:"",
+                author:"",
+                category:"",
+                voteScore:"",
+                deleted: false
+            },
+        }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -33,6 +34,15 @@ export default class PostForm extends React.Component {
     componentDidMount() {
         ReadableAPI.getAllCategories().then((categories) => {
             this.setState({ categories: [...this.state.categories, ...categories ] })})
+        if(this.props.post!==undefined)
+        {
+            this.setState({post: this.props.post})
+        }
+        else{
+            this.setState({post:{
+                category: this.state.categories[0]
+            }})
+        }
     }
 
     handleChange(event) {
@@ -52,22 +62,27 @@ export default class PostForm extends React.Component {
     }
 
     render() {
+        const post = this.state.post;
         return (
             <div>
                 <form onSubmit={this.handleSubmit} className='create-post-form'>
                     <div className='create-post-details'>
-                        <input  name="attribute" type="text" placeholder="attribute" value={this.state.post.attribute} onChange={this.handleChange}/>
-                        <input placeholder="title" name="title" type="text" value={this.state.post.title}  onChange={this.handleChange}/>
-                        <textarea placeholder="body" name="body" value={this.state.post.body} onChange={this.handleChange}/>
-                        <input placeholder="author" name="author" type="text" value={this.state.post.author}  onChange={this.handleChange}/>
-                         <select placeholder="category" name="category" onChange={this.handleChange}  value={this.state.post.category}>
+                        <input  name="attribute" type="text" placeholder="attribute" value={post.attribute} onChange={this.handleChange}/>
+                        <input placeholder="title" name="title" type="text" value={post.title}  onChange={this.handleChange}/>
+                        <textarea placeholder="body" name="body" value={post.body} onChange={this.handleChange}/>
+                        <input placeholder="author" name="author" type="text" value={post.author}  onChange={this.handleChange}/>
+                         <select placeholder="category" name="category" onChange={this.handleChange}  value={post.category}>
                           {this.state.categories.map(option => (
-                              <option value={option} key={option}>
+                              <option
+                                  value={option}
+                                  key={option}
+                                  defaultValue={post.category}
+                              >
                                   {option}
                               </option>
                           ))}
                          </select>
-                        <input placeholder="score" name="voteScore"  type="text" value={this.state.voteScore} onChange={this.handleChange} />
+                        <input placeholder="score" name="voteScore"  type="text" value={post.voteScore} onChange={this.handleChange} />
                         <button>Submit</button>
                     </div>
                 </form>

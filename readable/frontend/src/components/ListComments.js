@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import Comment from "./Comment";
 import Link from "react-router-dom/es/Link";
 import CommentForm from "./CommentForm";
-
+import Modal from 'react-modal';
 
 export class ListComments extends Component {
     state={
@@ -34,23 +34,21 @@ export class ListComments extends Component {
                     )}
                 </ul>
                 <div>
-                    {this.state.editFormOpen ?
-                        <div>
-                            <Link
-                                className='close-create-contact'
-                                to=''
-                                onClick={()=>{this.setState({editFormOpen:false})}}>
-                                Close
-                            </Link>
-                            <CommentForm/>
-                        </div>
-                        :
+                    <div>
                         <Link
+                            className='close-create-contact'
                             to=''
                             onClick={()=>{this.setState({editFormOpen:true})}}>
-                            Create new comment
+                            Add Comment
                         </Link>
-                    }
+                        <Modal
+                            isOpen={this.state.editFormOpen}
+                            contentLabel="Add Comment"
+                        >
+                            <CommentForm/>
+                            <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
+                        </Modal>
+                    </div>
                 </div>
             </div>
 

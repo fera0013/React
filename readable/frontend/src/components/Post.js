@@ -9,10 +9,10 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types'
-import {selectPost} from "../actions/comments";
-import CommentForm from "./CommentForm";
+import Modal from 'react-modal';
 import {Vote} from "./Vote";
 import * as ReadableAPI from "../utils/ReadableAPI";
+import PostForm from "./PostForm";
 
 export class Post extends Component {
     state={
@@ -39,6 +39,21 @@ export class Post extends Component {
                         voteUp = {ReadableAPI.upVotePost}
                         voteDown = {ReadableAPI.downVotePost}
                     />
+                    <Link
+                        className='close-create-contact'
+                        to=''
+                        onClick={()=>{this.setState({editFormOpen:true})}}>
+                        Edit post
+                    </Link>
+                    <Modal
+                        isOpen={this.state.editFormOpen}
+                        contentLabel="Edit Post"
+                    >
+                        <PostForm
+                            post={post}
+                        />
+                        <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
+                    </Modal>
                     {this.state.showComments ?
                         <div>
                             <Link

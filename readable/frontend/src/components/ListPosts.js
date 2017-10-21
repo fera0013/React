@@ -13,6 +13,7 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 import {Link} from "react-router-dom";
 import PostForm from "./PostForm";
 import Post from "./Post";
+import Modal from 'react-modal';
 
 export class ListPosts extends Component {
     state={
@@ -72,23 +73,19 @@ export class ListPosts extends Component {
                         )})}
                 </ul>
                 <div>
-                    {this.state.editFormOpen ?
-                        <div>
-                            <Link
-                                className='close-create-contact'
-                                to=''
-                                onClick={()=>{this.setState({editFormOpen:false})}}>
-                                Close
-                            </Link>
-                            <PostForm/>
-                        </div>
-                            :
-                        <Link
-                            to=''
-                            onClick={()=>{this.setState({editFormOpen:true})}}>
-                            Create new post
-                        </Link>
-                    }
+                    <Link
+                        className='close-create-contact'
+                        to=''
+                        onClick={()=>{this.setState({editFormOpen:true})}}>
+                        Add post
+                    </Link>
+                    <Modal
+                        isOpen={this.state.editFormOpen}
+                        contentLabel="Edit Post"
+                    >
+                       <PostForm/>
+                        <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
+                    </Modal>
                 </div>
             </div>
         )
