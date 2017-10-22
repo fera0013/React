@@ -3,6 +3,7 @@ export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_CATEGORY = 'SELECT_CATEGORY'
 export const DELETE_POST = 'DELETE_POST'
+export const ADD_POST = 'ADD_POST'
 
 
 export function selectCategory(category) {
@@ -12,7 +13,12 @@ export function selectCategory(category) {
     }
 }
 
-
+function addPost(post){
+    return {
+        type: ADD_POST,
+        post
+    }
+}
 
 function requestPosts(category) {
     return {
@@ -63,12 +69,20 @@ export function fetchPostsIfNeeded(category) {
     }
 }
 
-export function removePost(post_id){
+export function removePost(post){
     return (dispatch) => {
-        dispatch(deletePost(post_id))
-        ReadableAPI.deletePost(post_id).then(()=>{
-            return dispatch(fetchPosts())
+        dispatch(deletePost(post.id))
+        ReadableAPI.deletePost(post.id).then((posts)=>{
+            return dispatch(receivePosts(post.category,posts))
         })
+    }
+}
+
+
+export function createPosts(post) {
+    return dispatch => {
+        dispatch(addPost(post))
+        return ReadableAPI.createPost(post).then(posts => dispatch(receivePosts(post.category, posts)))
     }
 }
 

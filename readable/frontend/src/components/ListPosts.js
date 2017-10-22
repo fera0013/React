@@ -14,6 +14,8 @@ import {Link} from "react-router-dom";
 import PostForm from "./PostForm";
 import Post from "./Post";
 import Modal from 'react-modal';
+import v1 from 'uuid/v1';
+import {createPost} from "../utils/ReadableAPI";
 
 export class ListPosts extends Component {
     state={
@@ -25,6 +27,7 @@ export class ListPosts extends Component {
     constructor(props) {
         super(props)
         this.handleSelectCategory = this.handleSelectCategory.bind(this)
+        this.handleCreatePost = this.handleCreatePost.bind(this)
     }
     fetchPosts(){
         const { selectedCategory } = this.props
@@ -43,6 +46,12 @@ export class ListPosts extends Component {
         this.props.dispatch(selectCategory(nextCategory))
 
     }
+    handleCreatePost(post){
+        post.id= v1()
+        post.timestamp=Date.now()
+        this.props.dispatch(createPost(post))
+    }
+
     render() {
         const { posts} = this.props
         return (
@@ -83,7 +92,9 @@ export class ListPosts extends Component {
                         isOpen={this.state.editFormOpen}
                         contentLabel="Edit Post"
                     >
-                       <PostForm/>
+                       <PostForm
+                           onSubmit={this.handleCreatePost}
+                       />
                         <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
                     </Modal>
                 </div>

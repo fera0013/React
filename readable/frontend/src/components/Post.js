@@ -22,8 +22,8 @@ export class Post extends Component {
         super(props)
         this.onDeletePost = this.onDeletePost.bind(this)
     }
-    onDeletePost(post_id) {
-        this.props.dispatch(removePost(post_id))
+    onDeletePost(post) {
+        this.props.dispatch(removePost(post))
     }
     render() {
         const { post } = this.props

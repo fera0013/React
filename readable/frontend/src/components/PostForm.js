@@ -3,11 +3,7 @@
  */
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
-import v1 from 'uuid/v1';
-import {
-    fetchPostsIfNeeded
-} from '../actions/post'
-import {Link} from "react-router-dom";
+
 
 export default class PostForm extends React.Component {
     constructor(props) {
@@ -28,7 +24,6 @@ export default class PostForm extends React.Component {
             },
         }
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -52,20 +47,12 @@ export default class PostForm extends React.Component {
         this.setState({post:new_post})
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        let new_post = this.state.post
-        new_post.id= v1()
-        new_post.timestamp=Date.now()
-        ReadableAPI.createPost(new_post)
-        this.props.dispatch(fetchPostsIfNeeded(new_post.category))
-    }
 
     render() {
         const post = this.state.post;
         return (
             <div>
-                <form onSubmit={this.handleSubmit} className='create-post-form'>
+                <form onSubmit={this.props.onSubmit(post)} className='create-post-form'>
                     <div className='create-post-details'>
                         <input  name="attribute" type="text" placeholder="attribute" value={post.attribute} onChange={this.handleChange}/>
                         <input placeholder="title" name="title" type="text" value={post.title}  onChange={this.handleChange}/>

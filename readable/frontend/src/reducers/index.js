@@ -3,7 +3,7 @@ import {
     SELECT_CATEGORY,
     REQUEST_POSTS,
     RECEIVE_POSTS,
-    DELETE_POST,
+    DELETE_POST, ADD_POST,
 } from '../actions/post'
 
 import {
@@ -43,6 +43,7 @@ function posts(
                 items: action.posts,
                 lastUpdated: action.receivedAt
             })
+        case ADD_POST:
         default:
             return state
     }
