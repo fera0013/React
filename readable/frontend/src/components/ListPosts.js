@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
     selectCategory,
-    fetchPostsIfNeeded,
+    fetchPostsIfNeeded, createPost,
 } from '../actions/post'
 import Picker from "./Picker";
 import {connect} from "react-redux";
@@ -14,8 +14,7 @@ import {Link} from "react-router-dom";
 import PostForm from "./PostForm";
 import Post from "./Post";
 import Modal from 'react-modal';
-import v1 from 'uuid/v1';
-import {createPost} from "../utils/ReadableAPI";
+
 
 export class ListPosts extends Component {
     state={
@@ -27,11 +26,11 @@ export class ListPosts extends Component {
     constructor(props) {
         super(props)
         this.handleSelectCategory = this.handleSelectCategory.bind(this)
-        this.handleCreatePost = this.handleCreatePost.bind(this)
+        this.createPost = this.createPost.bind(this)
     }
     fetchPosts(){
         const { selectedCategory } = this.props
-        this.props.dispatch(fetchPostsIfNeeded(selectedCategory))
+        this.props.fetchPostsIfNeeded(selectedCategory)
     }
     componentDidMount() {
         ReadableAPI.getAllCategories().then((categories) => {
@@ -43,14 +42,14 @@ export class ListPosts extends Component {
     }
 
     handleSelectCategory(nextCategory) {
-        this.props.dispatch(selectCategory(nextCategory))
+        this.props.select(nextCategory)
 
     }
-    handleCreatePost(post){
-        post.id= v1()
-        post.timestamp=Date.now()
-        this.props.dispatch(createPost(post))
+    createPost(post)
+    {
+        this.props.add(post)
     }
+
 
     render() {
         const { posts} = this.props
@@ -58,7 +57,7 @@ export class ListPosts extends Component {
             <div className='list-posts'>
                 {this.state.categories.map((category) => (
                     //ToDo: Link to route /:category
-                    <Link to="">
+                    <Link key={category} to="">
                         <button onClick={() => this.handleSelectCategory(category)} key={category}>
                             {category}
                         </button>
@@ -77,26 +76,28 @@ export class ListPosts extends Component {
                     }).map((post) =>{
                         return(
                          <Post
+                             key={post.id}
                              post={post}
                          />
                         )})}
                 </ul>
                 <div>
-                    <Link
-                        className='close-create-contact'
-                        to=''
-                        onClick={()=>{this.setState({editFormOpen:true})}}>
-                        Add post
-                    </Link>
-                    <Modal
-                        isOpen={this.state.editFormOpen}
-                        contentLabel="Edit Post"
-                    >
-                       <PostForm
-                           onSubmit={this.handleCreatePost}
-                       />
-                        <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
-                    </Modal>
+                    {this.state.editFormOpen?
+                        <div>
+                            <Link
+                                to=''
+                                onClick={()=>{this.setState({editFormOpen:false})}}>
+                                Close
+                            </Link>
+                            <PostForm
+                                onSubmit={this.createPost}
+                            />
+                        </div>:
+                        <Link
+                            to=''
+                            onClick={()=>{this.setState({editFormOpen:true})}}>
+                            Add post
+                        </Link>}
                 </div>
             </div>
         )
@@ -111,6 +112,14 @@ ListPosts.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        add: (post) => dispatch(createPost(post)),
+        fetchPostsIfNeeded: (category) => dispatch(fetchPostsIfNeeded(category)),
+        select: (category) => dispatch(selectCategory(category))
+    }
 }
 
 function mapStateToProps(state) {
@@ -133,4 +142,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(ListPosts)
+export default connect(mapStateToProps,mapDispatchToProps)(ListPosts)

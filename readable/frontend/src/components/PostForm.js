@@ -3,9 +3,12 @@
  */
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
+import {createPost} from "../actions/post";
+import {v1} from "uuid";
+import {connect} from "react-redux";
 
 
-export default class PostForm extends React.Component {
+class PostForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,6 +27,7 @@ export default class PostForm extends React.Component {
             },
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -47,12 +51,19 @@ export default class PostForm extends React.Component {
         this.setState({post:new_post})
     }
 
+    handleSubmit(e){
+        e.preventDefault()
+        let new_post = this.state.post
+        new_post.id= v1()
+        new_post.timestamp=Date.now()
+        this.props.onSubmit(new_post)
+    }
 
     render() {
         const post = this.state.post;
         return (
             <div>
-                <form onSubmit={this.props.onSubmit(post)} className='create-post-form'>
+                <form  onSubmit={this.handleSubmit} className='create-post-form'>
                     <div className='create-post-details'>
                         <input  name="attribute" type="text" placeholder="attribute" value={post.attribute} onChange={this.handleChange}/>
                         <input placeholder="title" name="title" type="text" value={post.title}  onChange={this.handleChange}/>
@@ -70,7 +81,9 @@ export default class PostForm extends React.Component {
                           ))}
                          </select>
                         <input placeholder="score" name="voteScore"  type="text" value={post.voteScore} onChange={this.handleChange} />
-                        <button>Submit</button>
+                        <button>
+                            Submit
+                        </button>
                     </div>
                 </form>
             </div>
@@ -78,3 +91,13 @@ export default class PostForm extends React.Component {
     }
 }
 
+function mapDispatchToProps (dispatch) {
+    return {
+        create: (post) => dispatch(createPost(post)),
+    }
+}
+
+export default connect(
+   null,
+    mapDispatchToProps
+)(PostForm)

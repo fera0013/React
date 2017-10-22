@@ -4,7 +4,6 @@
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import v1 from 'uuid/v1';
-import {Link} from "react-router-dom";
 
 
 export default class CommentForm extends React.Component {

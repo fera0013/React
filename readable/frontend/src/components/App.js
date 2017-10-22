@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react'
 import ListPosts from './ListPosts'
-import CreatePost from "./PostForm";
 
 
 class AsyncApp extends Component {

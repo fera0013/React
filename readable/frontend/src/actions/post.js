@@ -79,7 +79,7 @@ export function removePost(post){
 }
 
 
-export function createPosts(post) {
+export function createPost(post) {
     return dispatch => {
         dispatch(addPost(post))
         return ReadableAPI.createPost(post).then(posts => dispatch(receivePosts(post.category, posts)))

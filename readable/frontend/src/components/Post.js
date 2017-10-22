@@ -15,11 +15,12 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 import PostForm from "./PostForm";
 
 export class Post extends Component {
-    state={
-        showComments:false
-    }
     constructor(props) {
         super(props)
+        this.state={
+            showComments:false,
+            editFormOpen:false
+        }
         this.onDeletePost = this.onDeletePost.bind(this)
     }
     onDeletePost(post) {
@@ -39,21 +40,23 @@ export class Post extends Component {
                         voteUp = {ReadableAPI.upVotePost}
                         voteDown = {ReadableAPI.downVotePost}
                     />
-                    <Link
-                        className='close-create-contact'
-                        to=''
-                        onClick={()=>{this.setState({editFormOpen:true})}}>
-                        Edit post
-                    </Link>
-                    <Modal
-                        isOpen={this.state.editFormOpen}
-                        contentLabel="Edit Post"
-                    >
-                        <PostForm
-                            post={post}
-                        />
-                        <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
-                    </Modal>
+                    {this.state.editFormOpen?
+                        <div>
+                            <Link
+                                to=''
+                                onClick={()=>{this.setState({editFormOpen:false})}}>
+                                Close
+                            </Link>
+                            <PostForm
+                                handleSubmit={this.createPost}
+                                post={post}
+                            />
+                        </div>:
+                        <Link
+                            to=''
+                            onClick={()=>{this.setState({editFormOpen:true})}}>
+                            Edit post
+                        </Link>}
                     {this.state.showComments ?
                         <div>
                             <Link
