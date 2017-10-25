@@ -18,7 +18,6 @@ export class ListComments extends Component {
     updateComments(){
         const { dispatch} = this.props
         dispatch(fetchCommentsIfNeeded(this.props.post.id))
-        console.log("comments:" + this.props.comments)
     }
     componentDidMount() {
        this.updateComments()

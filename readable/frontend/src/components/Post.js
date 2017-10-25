@@ -8,7 +8,6 @@ import {
 } from '../actions/post'
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import PropTypes from 'prop-types'
 import {Vote} from "./Vote";
 import * as ReadableAPI from "../utils/ReadableAPI";
 import PostForm from "./PostForm";
@@ -24,7 +23,7 @@ export class Post extends Component {
         this.onDeletePost = this.onDeletePost.bind(this)
     }
     onDeletePost(post) {
-        this.props.dispatch(removePost(post))
+        this.props.remove(post)
     }
     handleSelectPost(post_id) {
         console.log("post"+ post_id)
@@ -43,8 +42,9 @@ export class Post extends Component {
                     <p>{post.body}</p>
                     <Vote
                         element={post}
-                        voteUp = {ReadableAPI.upVotePost}
-                        voteDown = {ReadableAPI.downVotePost}
+                        onUpdate={(id,prev_vote,new_vote)=>{prev_vote<new_vote?
+                            ReadableAPI.upVotePost:
+                            ReadableAPI.downVotePost}}
                     />
                     {this.state.editFormOpen?
                         <div>
@@ -119,7 +119,8 @@ function mapDispatchToProps (dispatch) {
     return {
         /*add: (post) => dispatch(addComment(post)),*/
         fetchCommentsIfNeeded: (post_id) => dispatch(fetchCommentsIfNeeded(post_id)),
-        select: (post_id) => dispatch(selectPost(post_id))
+        select: (post_id) => dispatch(selectPost(post_id)),
+        remove: (post) =>dispatch(removePost(post))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post)

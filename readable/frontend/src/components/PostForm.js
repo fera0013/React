@@ -22,7 +22,7 @@ class PostForm extends React.Component {
                 body:"",
                 author:"",
                 category:"",
-                voteScore:"",
+                voteScore:"1",
                 deleted: false
             },
         }
@@ -56,7 +56,7 @@ class PostForm extends React.Component {
         let new_post = this.state.post
         new_post.id= v1()
         new_post.timestamp=Date.now()
-        this.props.onSubmit(new_post)
+        this.props.create(new_post)
     }
 
     render() {
@@ -65,7 +65,6 @@ class PostForm extends React.Component {
             <div>
                 <form  onSubmit={this.handleSubmit} className='create-post-form'>
                     <div className='create-post-details'>
-                        <input  name="attribute" type="text" placeholder="attribute" value={post.attribute} onChange={this.handleChange}/>
                         <input placeholder="title" name="title" type="text" value={post.title}  onChange={this.handleChange}/>
                         <textarea placeholder="body" name="body" value={post.body} onChange={this.handleChange}/>
                         <input placeholder="author" name="author" type="text" value={post.author}  onChange={this.handleChange}/>
@@ -80,7 +79,7 @@ class PostForm extends React.Component {
                               </option>
                           ))}
                          </select>
-                        <input placeholder="score" name="voteScore"  type="text" value={post.voteScore} onChange={this.handleChange} />
+                        <br/>
                         <button>
                             Submit
                         </button>

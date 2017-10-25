@@ -44,6 +44,13 @@ function posts(
                 lastUpdated: action.receivedAt
             })
         case ADD_POST:
+        case DELETE_POST:
+            return Object.assign({}, state, {
+                isFetching: false,
+                didInvalidate: false,
+                items: action.posts,
+                lastUpdated: action.receivedAt
+            })
         default:
             return state
     }
@@ -56,7 +63,6 @@ function postsByCategory(state = {}, action) {
             return Object.assign({}, state, {
                 [action.category]: posts(state[action.category], action)
             })
-        case DELETE_POST:
         default:
             return state
     }

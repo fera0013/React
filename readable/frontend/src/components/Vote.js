@@ -29,17 +29,20 @@ export class Vote extends React.Component {
         );
     }
 
+
     increment() {
+        let prev_score = this.state.score
         this.setState({
             score: this.state.score + 1,
         });
-        this.props.voteUp(this.props.element.id)
+        this.props.onUpdate(this.props.element.id,prev_score,this.state.score)
     }
 
     decrement() {
+        let prev_score = this.state.score
         this.setState({
             score: this.state.score - 1,
         });
-        this.props.voteDown(this.props.element.id)
+        this.props.onUpdate(this.props.element.id,prev_score,this.state.score)
     }
 }
