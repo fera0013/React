@@ -13,7 +13,7 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 import {Link} from "react-router-dom";
 import PostForm from "./PostForm";
 import Post from "./Post";
-import Modal from 'react-modal';
+
 
 
 export class ListPosts extends Component {
@@ -111,7 +111,6 @@ ListPosts.propTypes = {
     posts: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
-    dispatch: PropTypes.func.isRequired
 }
 
 function mapDispatchToProps (dispatch) {
@@ -123,7 +122,7 @@ function mapDispatchToProps (dispatch) {
 }
 
 function mapStateToProps(state) {
-    const { selectedCategory, postsByCategory, selectedPost } = state
+    const { selectedCategory, postsByCategory } = state
     const {
         isFetching,
         lastUpdated,
@@ -135,7 +134,6 @@ function mapStateToProps(state) {
 
     return {
         selectedCategory,
-        selectedPost,
         posts,
         isFetching,
         lastUpdated

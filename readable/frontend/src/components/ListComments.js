@@ -27,6 +27,7 @@ export class ListComments extends Component {
         return (
             <div className='list-posts'>
                 <ul  className='post-list'>
+                    {console.log(this.props.comments)}
                     {this.props.comments.map((comment) =>
                         <Comment
                             comment={comment}

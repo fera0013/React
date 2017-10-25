@@ -9,10 +9,10 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types'
-import Modal from 'react-modal';
 import {Vote} from "./Vote";
 import * as ReadableAPI from "../utils/ReadableAPI";
 import PostForm from "./PostForm";
+import {fetchCommentsIfNeeded, selectPost} from "../actions/comments";
 
 export class Post extends Component {
     constructor(props) {
@@ -25,6 +25,12 @@ export class Post extends Component {
     }
     onDeletePost(post) {
         this.props.dispatch(removePost(post))
+    }
+    handleSelectPost(post_id) {
+        console.log("post"+ post_id)
+        this.props.select(post_id)
+        this.props.fetchCommentsIfNeeded(post_id)
+        this.setState({showComments:true})
     }
     render() {
         const { post } = this.props
@@ -72,7 +78,7 @@ export class Post extends Component {
                         :
                         <Link
                             to=''
-                            onClick={()=>{this.setState({showComments:true})}}>
+                            onClick={() => this.handleSelectPost(post.id)} key={post.id}>
                             Show comments
                         </Link>
                     }
@@ -83,12 +89,10 @@ export class Post extends Component {
             </li>
         )
     }
-
-
 }
 
 Post.propTypes = {
-    dispatch: PropTypes.func.isRequired
+
 }
 
 function mapStateToProps(state) {
@@ -111,4 +115,11 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(Post)
+function mapDispatchToProps (dispatch) {
+    return {
+        /*add: (post) => dispatch(addComment(post)),*/
+        fetchCommentsIfNeeded: (post_id) => dispatch(fetchCommentsIfNeeded(post_id)),
+        select: (post_id) => dispatch(selectPost(post_id))
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Post)

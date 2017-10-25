@@ -10,6 +10,9 @@ import Modal from 'react-modal';
 import CommentForm from "./CommentForm";
 
 export default class Comment extends Component {
+    state={
+        editFormOpen:false
+    }
     onDeleteComment(comment) {
         this.props.dispatch(removeComment(comment.id))
     }
