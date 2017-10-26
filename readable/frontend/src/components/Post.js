@@ -4,12 +4,12 @@
 import React, { Component } from 'react'
 import ListComments from './ListComments'
 import {
-    removePost
+    downVote,
+    removePost, upVote
 } from '../actions/post'
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {Vote} from "./Vote";
-import * as ReadableAPI from "../utils/ReadableAPI";
 import PostForm from "./PostForm";
 import {fetchCommentsIfNeeded, selectPost} from "../actions/comments";
 
@@ -42,9 +42,8 @@ export class Post extends Component {
                     <p>{post.body}</p>
                     <Vote
                         element={post}
-                        onUpdate={(id,prev_vote,new_vote)=>{prev_vote<new_vote?
-                            ReadableAPI.upVotePost:
-                            ReadableAPI.downVotePost}}
+                        onUpVote={this.props.upVote}
+                        onDownVote={this.props.downVote}
                     />
                     {this.state.editFormOpen?
                         <div>
@@ -117,10 +116,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps (dispatch) {
     return {
-        /*add: (post) => dispatch(addComment(post)),*/
         fetchCommentsIfNeeded: (post_id) => dispatch(fetchCommentsIfNeeded(post_id)),
         select: (post_id) => dispatch(selectPost(post_id)),
-        remove: (post) =>dispatch(removePost(post))
+        remove: (post) =>dispatch(removePost(post)),
+        upVote: (post) =>dispatch(upVote(post)),
+        downVote: (post) =>dispatch(downVote(post))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post)

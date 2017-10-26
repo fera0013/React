@@ -4,12 +4,22 @@ export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const SELECT_CATEGORY = 'SELECT_CATEGORY'
 export const DELETE_POST = 'DELETE_POST'
 export const ADD_POST = 'ADD_POST'
-
+export const VOTE_POST = 'VOTE_POST'
+const UP = 'UP'
+const DOWN = 'DOWN'
 
 export function selectCategory(category) {
     return {
         type: SELECT_CATEGORY,
         category
+    }
+}
+
+function votePost(post_id,direction){
+    return {
+        type: VOTE_POST,
+        post_id,
+        direction
     }
 }
 
@@ -87,3 +97,16 @@ export function createPost(post) {
 }
 
 
+export function upVote(post_id){
+    return dispatch=>{
+        dispatch(votePost(post_id,UP))
+        return ReadableAPI.upVotePost(post_id)
+    }
+}
+
+export function downVote(post_id){
+    return dispatch=>{
+        dispatch(votePost(post_id,DOWN))
+        return ReadableAPI.downVotePost(post_id)
+    }
+}
