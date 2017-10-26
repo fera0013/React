@@ -1,11 +1,35 @@
 import * as ReadableAPI from "../utils/ReadableAPI";
+export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const SELECT_POST = 'SELECT_POST'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
+export const UPDATE_COMMENT = "UPDATE_COMMENT"
 const UP = 'UP'
-const DOWN = 'DOWN'
+const DOWN = 'DO'
+
+
+function createComment(comment){
+    return {
+        type: CREATE_COMMENT,
+        comment
+    }
+}
+
+export function update(comment){
+    return {
+        type: UPDATE_COMMENT,
+        comment
+    }
+}
+
+export function create(comment) {
+    return dispatch => {
+        dispatch(createComment(comment))
+        return ReadableAPI.createComment(comment)
+    }
+}
 
 
 export function selectPost(post_id) {

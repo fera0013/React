@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react'
 import {
+    create,
     fetchCommentsIfNeeded,
 } from '../actions/comments'
 import { connect } from 'react-redux'
@@ -17,8 +18,7 @@ export class ListComments extends Component {
         editFormOpen:false
     }
     updateComments(){
-        const { dispatch} = this.props
-        dispatch(fetchCommentsIfNeeded(this.props.post.id))
+       this.props.fetchComments(this.props.post.id)
     }
     componentDidMount() {
        this.updateComments()
@@ -35,27 +35,37 @@ export class ListComments extends Component {
                     )}
                 </ul>
                 <div>
-                    <div>
+                    {this.state.editFormOpen?
+                        <div>
+                            <Link
+                                to=''
+                                onClick={()=>{this.setState({editFormOpen:false})}}>
+                                Close
+                            </Link>
+                            <CommentForm
+                                onSubmit={this.props.create}
+                                post_id={this.props.post.id}
+                            />
+                        </div>:
                         <Link
-                            className='close-create-contact'
                             to=''
                             onClick={()=>{this.setState({editFormOpen:true})}}>
-                            Add Comment
-                        </Link>
-                        <Modal
-                            isOpen={this.state.editFormOpen}
-                            contentLabel="Add Comment"
-                        >
-                            <CommentForm/>
-                            <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
-                        </Modal>
-                    </div>
+                            Create comment
+                        </Link>}
                 </div>
             </div>
 
         )
     }
 }
+
+function mapDispatchToProps (dispatch) {
+    return {
+        create: (comment) => dispatch(create(comment)),
+        fetchComments: (post_id) => dispatch(fetchCommentsIfNeeded(post_id))
+    }
+}
+
 
 function mapStateToProps(state) {
     const { selectedPost, commentsByPost } = state
@@ -76,4 +86,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(ListComments)
+export default connect(mapStateToProps,mapDispatchToProps)(ListComments)

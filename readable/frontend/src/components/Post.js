@@ -22,6 +22,10 @@ export class Post extends Component {
         }
         this.onDeletePost = this.onDeletePost.bind(this)
     }
+    onChangePost(post)
+    {
+        //Todo
+    }
     onDeletePost(post) {
         this.props.remove(post)
     }
@@ -53,7 +57,7 @@ export class Post extends Component {
                                 Close
                             </Link>
                             <PostForm
-                                handleSubmit={this.createPost}
+                                handleSubmit={this.onChangePost}
                                 post={post}
                             />
                         </div>:

@@ -4,7 +4,7 @@
 import React, { Component } from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import {Vote} from "./Vote";
-import {downVote, removeComment, upVote} from "../actions/comments";
+import {downVote, removeComment, update, upVote} from "../actions/comments";
 import Link from "react-router-dom/es/Link";
 import Modal from 'react-modal';
 import CommentForm from "./CommentForm";
@@ -13,9 +13,6 @@ import {connect} from "react-redux";
 class Comment extends Component {
     state={
         editFormOpen:false
-    }
-    onDeleteComment(comment) {
-        this.props.dispatch(removeComment(comment.id))
     }
     render() {
         return(
@@ -29,24 +26,26 @@ class Comment extends Component {
                         onUpVote={this.props.upVote}
                         onDownVote={this.props.downVote}
                     />
-                    <Link
-                        className='close-create-contact'
-                        to=''
-                        onClick={()=>{this.setState({editFormOpen:true})}}>
-                        Add Comment
-                    </Link>
-                    <Modal
-                        isOpen={this.state.editFormOpen}
-                        contentLabel="Edit Comment"
-                    >
-                        <CommentForm
-                            comment={this.props.comment}
-                        />
-                        <button onClick={()=>{this.setState({editFormOpen:false})}}>close</button>
-                    </Modal>
+                    {this.state.editFormOpen?
+                        <div>
+                            <Link
+                                to=''
+                                onClick={()=>{this.setState({editFormOpen:false})}}>
+                                Close
+                            </Link>
+                            <CommentForm
+                                onSubmit={this.props.update}
+                                comment={this.props.comment}
+                            />
+                        </div>:
+                        <Link
+                            to=''
+                            onClick={()=>{this.setState({editFormOpen:true})}}>
+                            Edit comment
+                        </Link>}
                 </div>
-                <button onClick={() => this.onDeleteComment(this.props.comment)} className='post-remove'>
-                    Remove
+                <button onClick={() => this.props.remove(this.props.comment)} className='post-remove'>
+                    Delete
                 </button>
             </li>
         )
@@ -59,7 +58,9 @@ class Comment extends Component {
 function mapDispatchToProps (dispatch) {
     return {
         upVote: (comment_id) =>dispatch(upVote(comment_id)),
-        downVote: (comment_id) =>dispatch(downVote(comment_id))
+        downVote: (comment_id) =>dispatch(downVote(comment_id)),
+        update: (comment) =>dispatch(update(comment)),
+        delete: (comment)=>dispatch(removeComment(comment.id))
     }
 }
 export default connect(null,mapDispatchToProps)(Comment)

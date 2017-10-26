@@ -39,7 +39,7 @@ export const createPost = (post) =>
     body: JSON.stringify(post)
   }).then(res => res.json())
 
-export const addComment = (comment) =>
+export const createComment = (comment) =>
     fetch(`${api}/comments`, {
         method: 'POST',
         headers: {
