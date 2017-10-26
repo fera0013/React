@@ -119,8 +119,8 @@ function mapDispatchToProps (dispatch) {
         fetchCommentsIfNeeded: (post_id) => dispatch(fetchCommentsIfNeeded(post_id)),
         select: (post_id) => dispatch(selectPost(post_id)),
         remove: (post) =>dispatch(removePost(post)),
-        upVote: (post) =>dispatch(upVote(post)),
-        downVote: (post) =>dispatch(downVote(post))
+        upVote: (post_id) =>dispatch(upVote(post_id)),
+        downVote: (post_id) =>dispatch(downVote(post_id))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post)

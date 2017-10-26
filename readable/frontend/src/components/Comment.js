@@ -4,12 +4,13 @@
 import React, { Component } from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
 import {Vote} from "./Vote";
-import {removeComment} from "../actions/comments";
+import {downVote, removeComment, upVote} from "../actions/comments";
 import Link from "react-router-dom/es/Link";
 import Modal from 'react-modal';
 import CommentForm from "./CommentForm";
+import {connect} from "react-redux";
 
-export default class Comment extends Component {
+class Comment extends Component {
     state={
         editFormOpen:false
     }
@@ -24,9 +25,9 @@ export default class Comment extends Component {
                     <p>{this.props.comment.body}</p>
                     <p>{this.props.comment.author}</p>
                     <Vote
-                    element={this.props.comment}
-                    voteUp = {ReadableAPI.upVoteComment}
-                    voteDown = {ReadableAPI.downVoteComment}
+                        element={this.props.comment}
+                        onUpVote={this.props.upVote}
+                        onDownVote={this.props.downVote}
                     />
                     <Link
                         className='close-create-contact'
@@ -51,4 +52,15 @@ export default class Comment extends Component {
         )
     }
 }
+
+
+
+
+function mapDispatchToProps (dispatch) {
+    return {
+        upVote: (comment_id) =>dispatch(upVote(comment_id)),
+        downVote: (comment_id) =>dispatch(downVote(comment_id))
+    }
+}
+export default connect(null,mapDispatchToProps)(Comment)
 

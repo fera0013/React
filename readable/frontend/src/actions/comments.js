@@ -3,13 +3,23 @@ export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
 export const SELECT_POST = 'SELECT_POST'
-
+export const VOTE_COMMENT = 'VOTE_COMMENT'
+const UP = 'UP'
+const DOWN = 'DOWN'
 
 
 export function selectPost(post_id) {
     return {
         type: SELECT_POST,
         post_id
+    }
+}
+
+function voteComment(comment_id,direction){
+    return {
+        type: VOTE_COMMENT,
+        comment_id,
+        direction
     }
 }
 
@@ -71,3 +81,16 @@ export function removeComment(comment_id){
     }
 }
 
+export function upVote(comment_id){
+    return dispatch=>{
+        dispatch(voteComment(comment_id,UP))
+        return ReadableAPI.upVoteComment(comment_id)
+    }
+}
+
+export function downVote(comment_id){
+    return dispatch=>{
+        dispatch(voteComment(comment_id,DOWN))
+        return ReadableAPI.downVoteComment(comment_id)
+    }
+}

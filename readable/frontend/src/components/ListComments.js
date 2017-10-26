@@ -11,6 +11,7 @@ import Link from "react-router-dom/es/Link";
 import CommentForm from "./CommentForm";
 import Modal from 'react-modal';
 
+
 export class ListComments extends Component {
     state={
         editFormOpen:false
@@ -26,9 +27,9 @@ export class ListComments extends Component {
         return (
             <div className='list-posts'>
                 <ul  className='post-list'>
-                    {console.log(this.props.comments)}
                     {this.props.comments.map((comment) =>
                         <Comment
+                            key={comment.id}
                             comment={comment}
                         />
                     )}
