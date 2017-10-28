@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import {Vote} from "./Vote";
-import {downVote, removeComment, update, upVote} from "../actions/comments";
+import {downVote, removeComment, update, updateComment, upVote} from "../actions/comments";
 import Link from "react-router-dom/es/Link";
 import CommentForm from "./CommentForm";
 import {connect} from "react-redux";
@@ -11,6 +11,11 @@ import {connect} from "react-redux";
 class Comment extends Component {
     state={
         editFormOpen:false
+    }
+    updateComment(comment)
+    {
+        this.setState({editFormOpen:false})
+        this.props.update(comment)
     }
     render() {
         return(
@@ -32,7 +37,7 @@ class Comment extends Component {
                                 Close
                             </Link>
                             <CommentForm
-                                onSubmit={this.props.update}
+                                onSubmit={(post)=>this.updateComment(this.props.comment)}
                                 comment={this.props.comment}
                             />
                         </div>:
@@ -57,8 +62,8 @@ function mapDispatchToProps (dispatch) {
     return {
         upVote: (comment_id) =>dispatch(upVote(comment_id)),
         downVote: (comment_id) =>dispatch(downVote(comment_id)),
-        update: (comment) =>dispatch(update(comment)),
-        delete: (comment)=>dispatch(removeComment(comment.id))
+        delete: (comment)=>dispatch(removeComment(comment.id)),
+        update: (comment) => dispatch(updateComment(comment))
     }
 }
 export default connect(null,mapDispatchToProps)(Comment)

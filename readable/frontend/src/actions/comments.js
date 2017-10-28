@@ -47,6 +47,14 @@ function voteComment(comment_id,direction){
     }
 }
 
+
+function update(comment){
+    return {
+        type: UPDATE_COMMENT,
+        comment
+    }
+}
+
 function deleteComment(comment_id){
     return{
         type: DELETE_COMMENT,
@@ -116,5 +124,12 @@ export function downVote(comment_id){
     return dispatch=>{
         dispatch(voteComment(comment_id,DOWN))
         return ReadableAPI.downVoteComment(comment_id)
+    }
+}
+
+export function updateComment(comment) {
+    return dispatch => {
+        dispatch(update(comment))
+        return ReadableAPI.updateComment(comment)
     }
 }

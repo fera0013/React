@@ -48,7 +48,10 @@ export default class CommentForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         let new_comment = this.state.comment
-        new_comment.id= v1()
+        if(this.props.comment===undefined)
+        {
+            new_comment.id= v1()
+        }
         new_comment.timestamp=Date.now()
         this.props.onSubmit(new_comment)
     }

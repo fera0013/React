@@ -23,6 +23,11 @@ export class ListComments extends Component {
     componentDidMount() {
        this.updateComments()
     }
+    createComment(comment)
+    {
+        this.setState({editFormOpen:false})
+        this.props.create(comment)
+    }
     render() {
         return (
             <div className='list-posts'>
@@ -43,7 +48,7 @@ export class ListComments extends Component {
                                 Close
                             </Link>
                             <CommentForm
-                                onSubmit={this.props.create}
+                                onSubmit={(comment)=>this.createComment(comment)}
                                 post_id={this.props.post.id}
                             />
                         </div>:

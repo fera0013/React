@@ -10,7 +10,7 @@ import {
     SELECT_POST,
     REQUEST_COMMENTS,
     RECEIVE_COMMENTS,
-    DELETE_COMMENT
+    DELETE_COMMENT, UPDATE_COMMENT, CREATE_COMMENT
 } from '../actions/comments'
 
 function selectedCategory(state = 'all', action) {
@@ -93,6 +93,8 @@ function comments(
                 items: action.comments,
                 lastUpdated: action.receivedAt
             })
+        case CREATE_COMMENT:
+        case UPDATE_COMMENT:
         case DELETE_COMMENT:
         default:
             return state
