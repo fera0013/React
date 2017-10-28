@@ -26,7 +26,6 @@ export class ListPosts extends Component {
     constructor(props) {
         super(props)
         this.handleSelectCategory = this.handleSelectCategory.bind(this)
-        this.createPost = this.createPost.bind(this)
     }
     fetchPosts(){
         const { selectedCategory } = this.props
@@ -47,7 +46,8 @@ export class ListPosts extends Component {
     }
     createPost(post)
     {
-        this.props.add(post)
+        this.setState({editFormOpen:false})
+        this.props.create(post)
     }
 
 
@@ -90,7 +90,7 @@ export class ListPosts extends Component {
                                 Close
                             </Link>
                             <PostForm
-                                onSubmit={this.createPost}
+                                onSubmit={(post)=>this.createPost(post)}
                             />
                         </div>:
                         <Link
@@ -115,7 +115,7 @@ ListPosts.propTypes = {
 
 function mapDispatchToProps (dispatch) {
     return {
-        add: (post) => dispatch(createPost(post)),
+        create: (post) => dispatch(createPost(post)),
         fetchPostsIfNeeded: (category) => dispatch(fetchPostsIfNeeded(category)),
         select: (category) => dispatch(selectCategory(category))
     }

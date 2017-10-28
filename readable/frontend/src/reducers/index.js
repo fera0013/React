@@ -3,7 +3,7 @@ import {
     SELECT_CATEGORY,
     REQUEST_POSTS,
     RECEIVE_POSTS,
-    DELETE_POST, ADD_POST,
+    DELETE_POST, ADD_POST, UPDATE_POST,
 } from '../actions/post'
 
 import {
@@ -44,13 +44,8 @@ function posts(
                 lastUpdated: action.receivedAt
             })
         case ADD_POST:
+        case UPDATE_POST:
         case DELETE_POST:
-            return Object.assign({}, state, {
-                isFetching: false,
-                didInvalidate: false,
-                items: action.posts,
-                lastUpdated: action.receivedAt
-            })
         default:
             return state
     }

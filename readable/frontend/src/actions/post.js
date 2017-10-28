@@ -5,6 +5,7 @@ export const SELECT_CATEGORY = 'SELECT_CATEGORY'
 export const DELETE_POST = 'DELETE_POST'
 export const ADD_POST = 'ADD_POST'
 export const VOTE_POST = 'VOTE_POST'
+export const UPDATE_POST = 'UPDATE_POST'
 const UP = 'UP'
 const DOWN = 'DOWN'
 
@@ -20,6 +21,13 @@ function votePost(post_id,direction){
         type: VOTE_POST,
         post_id,
         direction
+    }
+}
+
+function update(post){
+    return {
+        type: UPDATE_POST,
+        post
     }
 }
 
@@ -108,5 +116,13 @@ export function downVote(post_id){
     return dispatch=>{
         dispatch(votePost(post_id,DOWN))
         return ReadableAPI.downVotePost(post_id)
+    }
+}
+
+export function updatePost(post) {
+    console.log(post)
+    return dispatch => {
+        dispatch(update(post))
+        return ReadableAPI.updatePost(post)
     }
 }

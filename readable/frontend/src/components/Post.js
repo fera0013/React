@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import ListComments from './ListComments'
 import {
     downVote,
-    removePost, upVote
+    removePost, updatePost, upVote
 } from '../actions/post'
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
@@ -22,18 +22,18 @@ export class Post extends Component {
         }
         this.onDeletePost = this.onDeletePost.bind(this)
     }
-    onChangePost(post)
-    {
-        //Todo
-    }
     onDeletePost(post) {
         this.props.remove(post)
     }
     handleSelectPost(post_id) {
-        console.log("post"+ post_id)
         this.props.select(post_id)
         this.props.fetchCommentsIfNeeded(post_id)
         this.setState({showComments:true})
+    }
+    updatePost(post)
+    {
+        this.setState({editFormOpen:false})
+        this.props.update(post)
     }
     render() {
         const { post } = this.props
@@ -57,7 +57,7 @@ export class Post extends Component {
                                 Close
                             </Link>
                             <PostForm
-                                handleSubmit={this.onChangePost}
+                                onSubmit={(post)=>this.updatePost(post)}
                                 post={post}
                             />
                         </div>:
@@ -122,9 +122,10 @@ function mapDispatchToProps (dispatch) {
     return {
         fetchCommentsIfNeeded: (post_id) => dispatch(fetchCommentsIfNeeded(post_id)),
         select: (post_id) => dispatch(selectPost(post_id)),
-        remove: (post) =>dispatch(removePost(post)),
-        upVote: (post_id) =>dispatch(upVote(post_id)),
-        downVote: (post_id) =>dispatch(downVote(post_id))
+        remove: (post) => dispatch(removePost(post)),
+        upVote: (post_id) => dispatch(upVote(post_id)),
+        downVote: (post_id) => dispatch(downVote(post_id)),
+        update: (post) => dispatch(updatePost(post))
     }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Post)

@@ -8,7 +8,7 @@ import {v1} from "uuid";
 import {connect} from "react-redux";
 
 
-class PostForm extends React.Component {
+export default  class PostForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -54,9 +54,12 @@ class PostForm extends React.Component {
     handleSubmit(e){
         e.preventDefault()
         let new_post = this.state.post
-        new_post.id= v1()
+        if(this.props.post===undefined)
+        {
+            new_post.id= v1()
+        }
         new_post.timestamp=Date.now()
-        this.props.create(new_post)
+        this.props.onSubmit(new_post)
     }
 
     render() {
@@ -90,13 +93,4 @@ class PostForm extends React.Component {
     }
 }
 
-function mapDispatchToProps (dispatch) {
-    return {
-        create: (post) => dispatch(createPost(post)),
-    }
-}
 
-export default connect(
-   null,
-    mapDispatchToProps
-)(PostForm)

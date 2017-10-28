@@ -67,7 +67,6 @@ export const deleteComment = (comment_id) =>
             'Content-Type': 'application/json'
         }
     }).then(res => res.json())
-        `POST /posts/:id`
 
 const votePost = (post_id,option) =>
     fetch(`${api}/posts/${post_id}`, {
@@ -104,3 +103,14 @@ export function upVoteComment(comment_id){
 export function downVoteComment(comment_id){
     voteComment(comment_id,'downVote')
 }
+
+export const updatePost=(post) =>
+fetch(`${api}/posts/${post.id}`, {
+    method: 'PUT',
+    headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(post)
+}).then(res => res.json())
+

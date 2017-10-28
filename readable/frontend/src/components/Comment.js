@@ -2,11 +2,9 @@
  * Created by z0017fjy on 26.09.2017.
  */
 import React, { Component } from 'react'
-import * as ReadableAPI from "../utils/ReadableAPI";
 import {Vote} from "./Vote";
 import {downVote, removeComment, update, upVote} from "../actions/comments";
 import Link from "react-router-dom/es/Link";
-import Modal from 'react-modal';
 import CommentForm from "./CommentForm";
 import {connect} from "react-redux";
 
