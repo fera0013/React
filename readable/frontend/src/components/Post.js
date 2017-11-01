@@ -94,29 +94,6 @@ export class Post extends Component {
     }
 }
 
-Post.propTypes = {
-
-}
-
-function mapStateToProps(state) {
-    const { selectedPost, commentsByPost } = state
-    const {
-        isFetching,
-        lastUpdated,
-        items: comments
-    } = commentsByPost[selectedPost] || {
-        isFetching: true,
-        items: []
-    }
-
-    return {
-        selectedPost,
-        comments,
-        isFetching,
-        lastUpdated
-    }
-}
-
 
 function mapDispatchToProps (dispatch) {
     return {
@@ -128,4 +105,4 @@ function mapDispatchToProps (dispatch) {
         update: (post) => dispatch(updatePost(post))
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Post)
+export default connect(null,mapDispatchToProps)(Post)

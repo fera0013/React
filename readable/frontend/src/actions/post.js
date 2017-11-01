@@ -38,17 +38,10 @@ function addPost(post){
     }
 }
 
-function requestPosts(category) {
-    return {
-        type: REQUEST_POSTS,
-        category
-    }
-}
 
-function receivePosts(category, posts) {
+function receivePosts(posts) {
     return {
         type: RECEIVE_POSTS,
-        category,
         posts: posts,
         receivedAt: Date.now()
     }
@@ -61,31 +54,12 @@ function deletePost(post_id){
     }
 }
 
-function fetchPosts(category) {
+export function fetchPosts() {
     return dispatch => {
-        dispatch(requestPosts(category))
-        return ReadableAPI.getAllPosts().then(posts => dispatch(receivePosts(category, posts)))
+        return ReadableAPI.getAllPosts().then(posts => dispatch(receivePosts(posts)))
     }
 }
 
-function shouldFetchPosts(state, category) {
-    const posts = state.postsByCategory[category]
-    if (!posts) {
-        return true
-    } else if (posts.isFetching) {
-        return false
-    } else {
-        return posts.didInvalidate
-    }
-}
-
-export function fetchPostsIfNeeded(category) {
-    return (dispatch, getState) => {
-        if (shouldFetchPosts(getState(), category)) {
-            return dispatch(fetchPosts(category))
-        }
-    }
-}
 
 export function removePost(post){
     return (dispatch) => {

@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
     selectCategory,
-    fetchPostsIfNeeded, createPost,
+    fetchPostsIfNeeded, createPost, fetchPosts,
 } from '../actions/post'
 import Picker from "./Picker";
 import {connect} from "react-redux";
@@ -17,27 +17,20 @@ import Post from "./Post";
 
 
 export class ListPosts extends Component {
-    state={
-        sortMethods:['voteScore','timestamp'],
+    state= {
+        sortMethods: ['voteScore', 'timestamp'],
         sortMethod: 'voteScore',
-        categories:['all'],
-        editFormOpen:false
+        categories: ['all'],
+        selectedCategory: 'all',
     }
     constructor(props) {
         super(props)
         this.handleSelectCategory = this.handleSelectCategory.bind(this)
     }
-    fetchPosts(){
-        const { selectedCategory } = this.props
-        this.props.fetchPostsIfNeeded(selectedCategory)
-    }
     componentDidMount() {
         ReadableAPI.getAllCategories().then((categories) => {
             this.setState({ categories: [...this.state.categories, ...categories ] })})
-       this.fetchPosts()
-    }
-    componentDidUpdate() {
-        this.fetchPosts()
+        this.props.fetchPosts()
     }
 
     handleSelectCategory(nextCategory) {
@@ -53,12 +46,15 @@ export class ListPosts extends Component {
 
     render() {
         const { posts} = this.props
+        console.log(posts)
         return (
             <div className='list-posts'>
                 {this.state.categories.map((category) => (
                     //ToDo: Link to route /:category
                     <Link key={category} to="">
-                        <button onClick={() => this.handleSelectCategory(category)} key={category}>
+                        <button
+                            onClick={() => this.setState({selectedCategory: category})}
+                            key={category}>
                             {category}
                         </button>
                     </Link>
@@ -70,7 +66,7 @@ export class ListPosts extends Component {
                 />
                 <ul className='post-list'>
                     {posts.filter((post)=>{
-                        return 'all' === this.props.selectedCategory || this.props.selectedCategory === post.category
+                        return 'all' === this.state.selectedCategory || this.state.selectedCategory === post.category
                     }).sort((post_1,post_2)=>{
                         return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
                     }).map((post) =>{
@@ -106,37 +102,21 @@ export class ListPosts extends Component {
 
 }
 
-ListPosts.propTypes = {
-    selectedCategory: PropTypes.string.isRequired,
+/*ListPosts.propTypes = {
     posts: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
-}
+}*/
 
 function mapDispatchToProps (dispatch) {
     return {
         create: (post) => dispatch(createPost(post)),
-        fetchPostsIfNeeded: (category) => dispatch(fetchPostsIfNeeded(category)),
-        select: (category) => dispatch(selectCategory(category))
+        fetchPosts: (category) => dispatch(fetchPosts()),
     }
 }
 
 function mapStateToProps(state) {
-    const { selectedCategory, postsByCategory } = state
-    const {
-        isFetching,
-        lastUpdated,
-        items: posts
-    } = postsByCategory[selectedCategory] || {
-        isFetching: true,
-        items: []
-    }
-
+    const { posts } = state
     return {
-        selectedCategory,
-        posts,
-        isFetching,
-        lastUpdated
+        posts
     }
 }
 
