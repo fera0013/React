@@ -2,10 +2,8 @@
  * Created by z0017fjy on 26.09.2017.
  */
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import {
-    selectCategory,
-    fetchPostsIfNeeded, createPost, fetchPosts,
+     createPost, fetchPosts,
 } from '../actions/post'
 import Picker from "./Picker";
 import {connect} from "react-redux";
@@ -46,7 +44,6 @@ export class ListPosts extends Component {
 
     render() {
         const { posts} = this.props
-        console.log(posts)
         return (
             <div className='list-posts'>
                 {this.state.categories.map((category) => (

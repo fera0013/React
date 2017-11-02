@@ -4,24 +4,21 @@
 import React, { Component } from 'react'
 import {
     create,
-    fetchCommentsIfNeeded,
+    fetchComments,
 } from '../actions/comments'
 import { connect } from 'react-redux'
 import Comment from "./Comment";
 import Link from "react-router-dom/es/Link";
 import CommentForm from "./CommentForm";
-import Modal from 'react-modal';
 
 
 export class ListComments extends Component {
     state={
         editFormOpen:false
     }
-    updateComments(){
-       this.props.fetchComments(this.props.post.id)
-    }
     componentDidMount() {
-       this.updateComments()
+        console.log("fetch_comments ")
+        this.props.fetchComments(this.props.post.id)
     }
     createComment(comment)
     {
@@ -29,15 +26,17 @@ export class ListComments extends Component {
         this.props.create(comment)
     }
     render() {
+        console.log(this.props.comments)
         return (
             <div className='list-posts'>
                 <ul  className='post-list'>
-                    {this.props.comments.map((comment) =>
+                    {this.props.comments&&
+                    this.props.comments.map((comment) =>
                         <Comment
                             key={comment.id}
                             comment={comment}
-                        />
-                    )}
+                        />)
+                    }
                 </ul>
                 <div>
                     {this.state.editFormOpen?
@@ -67,27 +66,15 @@ export class ListComments extends Component {
 function mapDispatchToProps (dispatch) {
     return {
         create: (comment) => dispatch(create(comment)),
-        fetchComments: (post_id) => dispatch(fetchCommentsIfNeeded(post_id))
+        fetchComments: (post_id) => dispatch(fetchComments(post_id))
     }
 }
 
 
 function mapStateToProps(state) {
-    const { selectedPost, commentsByPost } = state
-    const {
-        isFetching,
-        lastUpdated,
-        items: comments
-    } = commentsByPost[selectedPost] || {
-        isFetching: true,
-        items: []
-    }
-
+    const {comments} = state
     return {
-        selectedPost,
-        comments,
-        isFetching,
-        lastUpdated
+        comments
     }
 }
 

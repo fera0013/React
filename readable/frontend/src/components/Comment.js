@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import {Vote} from "./Vote";
-import {downVote, removeComment, update, updateComment, upVote} from "../actions/comments";
+import {downVote, removeComment,updateComment, upVote} from "../actions/comments";
 import Link from "react-router-dom/es/Link";
 import CommentForm from "./CommentForm";
 import {connect} from "react-redux";

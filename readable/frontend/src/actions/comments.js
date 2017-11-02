@@ -17,12 +17,6 @@ function createComment(comment){
     }
 }
 
-export function update(comment){
-    return {
-        type: UPDATE_COMMENT,
-        comment
-    }
-}
 
 export function create(comment) {
     return dispatch => {
@@ -62,12 +56,6 @@ function deleteComment(comment_id){
     }
 }
 
-function requestComments(post_id) {
-    return {
-        type: REQUEST_COMMENTS,
-        post_id
-    }
-}
 
 function receiveComments(post_id, comments) {
     return {
@@ -78,29 +66,9 @@ function receiveComments(post_id, comments) {
     }
 }
 
-function fetchComments(post_id) {
+export function fetchComments(post_id) {
     return dispatch => {
-        dispatch(requestComments(post_id))
         return ReadableAPI.getCommentsForPost(post_id).then(comments => dispatch(receiveComments(post_id, comments)))
-    }
-}
-
-function shouldFetchComments(state,post_id) {
-    const comments = state.commentsByPost[post_id]
-    if (!comments) {
-        return true
-    } else if (comments.isFetching) {
-        return false
-    } else {
-        return comments.didInvalidate
-    }
-}
-
-export function fetchCommentsIfNeeded(post_id) {
-    return (dispatch, getState) => {
-        if (shouldFetchComments(getState(), post_id)) {
-            return dispatch(fetchComments(post_id))
-        }
     }
 }
 

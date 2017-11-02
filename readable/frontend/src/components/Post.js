@@ -11,7 +11,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {Vote} from "./Vote";
 import PostForm from "./PostForm";
-import {fetchCommentsIfNeeded, selectPost} from "../actions/comments";
+
 
 export class Post extends Component {
     constructor(props) {
@@ -24,11 +24,6 @@ export class Post extends Component {
     }
     onDeletePost(post) {
         this.props.remove(post)
-    }
-    handleSelectPost(post_id) {
-        this.props.select(post_id)
-        this.props.fetchCommentsIfNeeded(post_id)
-        this.setState({showComments:true})
     }
     updatePost(post)
     {
@@ -81,7 +76,8 @@ export class Post extends Component {
                         :
                         <Link
                             to=''
-                            onClick={() => this.handleSelectPost(post.id)} key={post.id}>
+                            onClick={() =>  this.setState({showComments:true})}
+                            key={post.id}>
                             Show comments
                         </Link>
                     }
@@ -97,8 +93,6 @@ export class Post extends Component {
 
 function mapDispatchToProps (dispatch) {
     return {
-        fetchCommentsIfNeeded: (post_id) => dispatch(fetchCommentsIfNeeded(post_id)),
-        select: (post_id) => dispatch(selectPost(post_id)),
         remove: (post) => dispatch(removePost(post)),
         upVote: (post_id) => dispatch(upVote(post_id)),
         downVote: (post_id) => dispatch(downVote(post_id)),
