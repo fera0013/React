@@ -31,7 +31,9 @@ export class ListComments extends Component {
             <div className='list-posts'>
                 <ul  className='post-list'>
                     {this.props.comments&&
-                    this.props.comments.map((comment) =>
+                    this.props.comments.
+                        filter((comment)=>{return comment.parentId===this.props.post.id}).
+                    map((comment) =>
                         <Comment
                             key={comment.id}
                             comment={comment}

@@ -26,8 +26,14 @@ export default function reducer(
                 posts: action.posts
             })
         case ADD_POST:
+            var newState = { ...state };
+            newState.posts.push(action.post)
+            return newState
         case UPDATE_POST:
         case DELETE_POST:
+            var newState = { ...state };
+            newState.posts.find((post)=>{return post.id===action.post_id}).deleted = true
+            return newState
         case RECEIVE_COMMENTS:
             return Object.assign({}, state, {
                 comments: action.comments

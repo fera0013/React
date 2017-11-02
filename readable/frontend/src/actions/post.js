@@ -50,7 +50,7 @@ function receivePosts(posts) {
 function deletePost(post_id){
     return{
         type: DELETE_POST,
-        post: post_id
+        post_id: post_id
     }
 }
 
@@ -63,18 +63,14 @@ export function fetchPosts() {
 
 export function removePost(post){
     return (dispatch) => {
-        dispatch(deletePost(post.id))
-        ReadableAPI.deletePost(post.id).then((posts)=>{
-            return dispatch(receivePosts(post.category,posts))
-        })
+        return ReadableAPI.deletePost(post.id).then(post => dispatch(deletePost(post.id)))
     }
 }
 
 
 export function createPost(post) {
     return dispatch => {
-        dispatch(addPost(post))
-        return ReadableAPI.createPost(post).then(posts => dispatch(receivePosts(post.category, posts)))
+        return ReadableAPI.createPost(post).then(posts => dispatch(addPost(post)))
     }
 }
 
