@@ -17,7 +17,6 @@ export class ListComments extends Component {
         editFormOpen:false
     }
     componentDidMount() {
-        console.log("fetch_comments ")
         this.props.fetchComments(this.props.post.id)
     }
     createComment(comment)
@@ -26,12 +25,11 @@ export class ListComments extends Component {
         this.props.create(comment)
     }
     render() {
-        console.log(this.props.comments)
         return (
             <div className='list-posts'>
                 <ul  className='post-list'>
-                    {this.props.comments&&
-                    this.props.comments.
+                    {this.props.comments.hasOwnProperty(this.props.post.id)&&
+                    this.props.comments[this.props.post.id].
                         filter((comment)=>{return comment.parentId===this.props.post.id}).
                     map((comment) =>
                         <Comment

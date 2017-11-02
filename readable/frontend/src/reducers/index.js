@@ -16,7 +16,7 @@ import {
 export default function reducer(
     state = {
         posts: [],
-        comments: []
+        comments: {}
     },
     action
 ) {
@@ -36,7 +36,10 @@ export default function reducer(
             return newState
         case RECEIVE_COMMENTS:
             return Object.assign({}, state, {
-                comments: action.comments
+                comments:{
+                    ...state.comments,
+                    [action.post_id]: action.comments
+                }
             })
         case CREATE_COMMENT:
         case UPDATE_COMMENT:

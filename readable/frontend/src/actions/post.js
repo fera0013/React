@@ -9,12 +9,7 @@ export const UPDATE_POST = 'UPDATE_POST'
 const UP = 'UP'
 const DOWN = 'DOWN'
 
-export function selectCategory(category) {
-    return {
-        type: SELECT_CATEGORY,
-        category
-    }
-}
+
 
 function votePost(post_id,direction){
     return {
