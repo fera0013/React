@@ -47,7 +47,7 @@ class Comment extends Component {
                             Edit comment
                         </Link>}
                 </div>
-                <button onClick={() => this.props.remove(this.props.comment)} className='post-remove'>
+                <button onClick={() => this.props.delete(this.props.comment)} className='post-remove'>
                     Delete
                 </button>
             </li>
@@ -60,9 +60,9 @@ class Comment extends Component {
 
 function mapDispatchToProps (dispatch) {
     return {
-        upVote: (comment_id) =>dispatch(upVote(comment_id)),
-        downVote: (comment_id) =>dispatch(downVote(comment_id)),
-        delete: (comment)=>dispatch(removeComment(comment.id)),
+        upVote: (comment) =>dispatch(upVote(comment)),
+        downVote: (comment) =>dispatch(downVote(comment)),
+        delete: (comment)=>dispatch(removeComment(comment)),
         update: (comment) => dispatch(updateComment(comment))
     }
 }

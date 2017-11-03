@@ -2,7 +2,7 @@ import * as ReadableAPI from "../utils/ReadableAPI";
 export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
-export const RECEIVE_COMMENTS = 'RECEIVE_COMMENTS'
+export const RETRIEVE_COMMENTS = 'RETRIEVE_COMMENTS'
 export const SELECT_POST = 'SELECT_POST'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const UPDATE_COMMENT = "UPDATE_COMMENT"
@@ -26,17 +26,11 @@ export function create(comment) {
 }
 
 
-export function selectPost(post_id) {
-    return {
-        type: SELECT_POST,
-        post_id
-    }
-}
 
-function voteComment(comment_id,direction){
+function voteComment(comment,direction){
     return {
         type: VOTE_COMMENT,
-        comment_id,
+        comment,
         direction
     }
 }
@@ -49,19 +43,19 @@ function update(comment){
     }
 }
 
-function deleteComment(comment_id){
+function deleteComment(comment){
     return{
         type: DELETE_COMMENT,
-        comment: comment_id
+        comment
     }
 }
 
 
 function receiveComments(post_id, comments) {
     return {
-        type: RECEIVE_COMMENTS,
+        type: RETRIEVE_COMMENTS,
         post_id,
-        comments: comments,
+        comments,
         receivedAt: Date.now()
     }
 }
@@ -72,26 +66,23 @@ export function fetchComments(post_id) {
     }
 }
 
-export function removeComment(comment_id){
+export function removeComment(comment){
     return (dispatch) => {
-        dispatch(deleteComment(comment_id))
-        ReadableAPI.deleteComment(comment_id).then(()=>{
-            return dispatch(fetchComments())
-        })
+        return ReadableAPI.deleteComment(comment.id).then(comment => dispatch(deleteComment(comment)))
     }
 }
 
-export function upVote(comment_id){
+export function upVote(comment){
     return dispatch=>{
-        dispatch(voteComment(comment_id,UP))
-        return ReadableAPI.upVoteComment(comment_id)
+        dispatch(voteComment(comment,UP))
+        return ReadableAPI.upVoteComment(comment.id)
     }
 }
 
-export function downVote(comment_id){
+export function downVote(comment){
     return dispatch=>{
-        dispatch(voteComment(comment_id,DOWN))
-        return ReadableAPI.downVoteComment(comment_id)
+        dispatch(voteComment(comment,DOWN))
+        return ReadableAPI.downVoteComment(comment.id)
     }
 }
 

@@ -8,10 +8,10 @@ import {
 } from '../actions/post'
 
 import {
-    RECEIVE_COMMENTS,
+    RETRIEVE_COMMENTS,
     DELETE_COMMENT,
     UPDATE_COMMENT,
-    CREATE_COMMENT
+    CREATE_COMMENT, VOTE_COMMENT
 } from '../actions/comments'
 
 export default function reducer(
@@ -45,15 +45,27 @@ export default function reducer(
             newState.posts.set(action.post.id,action.post)
             return newState
         case CREATE_COMMENT:
-        case RECEIVE_COMMENTS:
+            var newState = { ...state };
+            newState.comments.set(action.comment.id,action.comment)
+            return newState
+        case RETRIEVE_COMMENTS:
+            var comments = new Map()
+            action.comments.forEach((comment)=>{comments.set(comment.id,comment)})
             return Object.assign({}, state, {
-                comments:{
-                    ...state.comments,
-                    [action.post_id]: action.comments
-                }
+                comments: comments
             })
         case UPDATE_COMMENT:
+            var newState = { ...state };
+            newState.comments.set(action.comment.id,action.comment)
+            return newState
         case DELETE_COMMENT:
+            var newState = { ...state };
+            newState.comments.delete(action.comment_id)
+            return newState
+        case VOTE_COMMENT:
+            var newState = { ...state };
+            newState.comments.set(action.comment.id,action.comment)
+            return newState
         default:
             return state
     }
