@@ -43,7 +43,7 @@ export class ListPosts extends Component {
 
 
     render() {
-        const { posts} = this.props
+        const posts = Array.from(this.props.posts.values())
         return (
             <div className='list-posts'>
                 {this.state.categories.map((category) => (

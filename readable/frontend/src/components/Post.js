@@ -94,8 +94,8 @@ export class Post extends Component {
 function mapDispatchToProps (dispatch) {
     return {
         remove: (post) => dispatch(removePost(post)),
-        upVote: (post_id) => dispatch(upVote(post_id)),
-        downVote: (post_id) => dispatch(downVote(post_id)),
+        upVote: (post) => dispatch(upVote(post)),
+        downVote: (post) => dispatch(downVote(post)),
         update: (post) => dispatch(updatePost(post))
     }
 }

@@ -1,9 +1,9 @@
 import * as ReadableAPI from "../utils/ReadableAPI";
 export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
+export const RETRIEVE_POSTS = 'RETRIEVE_POSTS'
 export const SELECT_CATEGORY = 'SELECT_CATEGORY'
 export const DELETE_POST = 'DELETE_POST'
-export const ADD_POST = 'ADD_POST'
+export const CREATE_POST = 'CREATE_POST'
 export const VOTE_POST = 'VOTE_POST'
 export const UPDATE_POST = 'UPDATE_POST'
 const UP = 'UP'
@@ -11,10 +11,10 @@ const DOWN = 'DOWN'
 
 
 
-function votePost(post_id,direction){
+function votePost(post,direction){
     return {
         type: VOTE_POST,
-        post_id,
+        post,
         direction
     }
 }
@@ -28,7 +28,7 @@ function update(post){
 
 function addPost(post){
     return {
-        type: ADD_POST,
+        type: CREATE_POST,
         post
     }
 }
@@ -36,7 +36,7 @@ function addPost(post){
 
 function receivePosts(posts) {
     return {
-        type: RECEIVE_POSTS,
+        type: RETRIEVE_POSTS,
         posts: posts,
         receivedAt: Date.now()
     }
@@ -70,24 +70,22 @@ export function createPost(post) {
 }
 
 
-export function upVote(post_id){
+export function upVote(post){
     return dispatch=>{
-        dispatch(votePost(post_id,UP))
-        return ReadableAPI.upVotePost(post_id)
+        dispatch(votePost(post,UP))
+        return ReadableAPI.upVotePost(post.id)
     }
 }
 
-export function downVote(post_id){
+export function downVote(post){
     return dispatch=>{
-        dispatch(votePost(post_id,DOWN))
-        return ReadableAPI.downVotePost(post_id)
+        return ReadableAPI.downVotePost(post.id).then(dispatch(votePost(post,DOWN)))
     }
 }
 
 export function updatePost(post) {
-    console.log(post)
     return dispatch => {
         dispatch(update(post))
-        return ReadableAPI.updatePost(post)
+        return ReadableAPI.updatePost(post).then()
     }
 }

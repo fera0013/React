@@ -1,39 +1,50 @@
 import { combineReducers } from 'redux'
 import {
-    SELECT_CATEGORY,
-    REQUEST_POSTS,
-    RECEIVE_POSTS,
-    DELETE_POST, ADD_POST, UPDATE_POST,
+    RETRIEVE_POSTS,
+    DELETE_POST,
+    CREATE_POST,
+    UPDATE_POST,
+    VOTE_POST,
 } from '../actions/post'
 
 import {
-    SELECT_POST,
-    REQUEST_COMMENTS,
     RECEIVE_COMMENTS,
-    DELETE_COMMENT, UPDATE_COMMENT, CREATE_COMMENT
+    DELETE_COMMENT,
+    UPDATE_COMMENT,
+    CREATE_COMMENT
 } from '../actions/comments'
 
 export default function reducer(
     state = {
-        posts: [],
-        comments: {}
+        posts: new Map(),
+        comments: new Map()
     },
     action
 ) {
     switch (action.type) {
-        case RECEIVE_POSTS:
-            return Object.assign({}, state, {
-                posts: action.posts
-            })
-        case ADD_POST:
+        case CREATE_POST:
             var newState = { ...state };
-            newState.posts.push(action.post)
+            newState.posts.set(action.post.id,action.post)
             return newState
+        case RETRIEVE_POSTS:
+            var posts = new Map()
+            action.posts.forEach((post)=>{posts.set(post.id,post)})
+            return Object.assign({}, state, {
+                posts: posts
+            })
         case UPDATE_POST:
+            var newState = { ...state };
+            newState.posts.set(action.post.id,action.post)
+            return newState
         case DELETE_POST:
             var newState = { ...state };
-            newState.posts.find((post)=>{return post.id===action.post_id}).deleted = true
+            newState.posts.delete(action.post_id)
             return newState
+        case VOTE_POST:
+            var newState = { ...state };
+            newState.posts.set(action.post.id,action.post)
+            return newState
+        case CREATE_COMMENT:
         case RECEIVE_COMMENTS:
             return Object.assign({}, state, {
                 comments:{
@@ -41,7 +52,6 @@ export default function reducer(
                     [action.post_id]: action.comments
                 }
             })
-        case CREATE_COMMENT:
         case UPDATE_COMMENT:
         case DELETE_COMMENT:
         default:

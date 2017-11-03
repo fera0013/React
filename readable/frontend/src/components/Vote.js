@@ -10,9 +10,9 @@ export class Vote extends React.Component {
         const {element,onDownVote,onUpVote} = this.props
         return (
             <div className="vote-score">
-                <button className="countDown" onClick={()=>{ onDownVote(element.id)}}>-</button>
+                <button className="countDown" onClick={()=>{ onDownVote(element)}}>-</button>
                 <div>{element.voteScore}</div>
-                <button className="countUp" onClick={()=>{ onUpVote(element.id)}}>+</button>
+                <button className="countUp" onClick={()=>{ onUpVote(element)}}>+</button>
             </div>
         );
     }
