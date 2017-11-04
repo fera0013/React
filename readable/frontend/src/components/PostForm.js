@@ -31,23 +31,27 @@ export default  class PostForm extends React.Component {
     }
 
     componentDidMount() {
-        ReadableAPI.getAllCategories().then((categories) => {
-            this.setState({ categories: [...this.state.categories, ...categories ] })})
         if(this.props.post!==undefined)
         {
             this.setState({post: this.props.post})
         }
         else{
-            this.setState({post:{
-                category: this.state.categories[0]
-            }})
+            ReadableAPI.getAllCategories().then((categories) => {
+                console.log(categories)
+                this.setState({
+                    categories,
+                    post: {
+                        category: categories[0]
+                    }})})
         }
     }
 
     handleChange(event) {
         let target=event.target
+        console.log(event.target)
         let new_post = this.state.post
         new_post[target.name]=target.value
+        console.log(new_post)
         this.setState({post:new_post})
     }
 
