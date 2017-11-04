@@ -37,7 +37,6 @@ export default  class PostForm extends React.Component {
         }
         else{
             ReadableAPI.getAllCategories().then((categories) => {
-                console.log(categories)
                 this.setState({
                     categories,
                     post: {
@@ -48,10 +47,8 @@ export default  class PostForm extends React.Component {
 
     handleChange(event) {
         let target=event.target
-        console.log(event.target)
         let new_post = this.state.post
         new_post[target.name]=target.value
-        console.log(new_post)
         this.setState({post:new_post})
     }
 

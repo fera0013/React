@@ -17,7 +17,7 @@ import {
 export default function reducer(
     state = {
         posts: new Map(),
-        comments: new Map()
+        comments: new Map(),
     },
     action
 ) {
@@ -53,11 +53,9 @@ export default function reducer(
             newState.comments.set(action.comment.id,action.comment)
             return newState
         case RETRIEVE_COMMENTS:
-            var comments = new Map()
-            action.comments.forEach((comment)=>{comments.set(comment.id,comment)})
-            return Object.assign({}, state, {
-                comments: comments
-            })
+            var newState = { ...state };
+            action.comments.forEach((comment)=>{newState.comments.set(comment.id,comment)})
+            return newState
         case UPDATE_COMMENT:
             var newState = { ...state };
             newState.comments.set(action.comment.id,action.comment)
