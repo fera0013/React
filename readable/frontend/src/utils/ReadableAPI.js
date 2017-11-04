@@ -79,11 +79,11 @@ const votePost = (post_id,option) =>
     }).then(res => res.json())
 
 export function upVotePost(post_id){
-    votePost(post_id,'upVote')
+    return votePost(post_id,'upVote')
 }
 
 export function downVotePost(post_id){
-    votePost(post_id,'downVote')
+    return votePost(post_id,'downVote')
 }
 
 const voteComment = (comment_id,option) =>
@@ -97,11 +97,11 @@ const voteComment = (comment_id,option) =>
     }).then(res => res.json())
 
 export function upVoteComment(comment_id){
-    voteComment(comment_id,'upVote')
+    return voteComment(comment_id,'upVote')
 }
 
 export function downVoteComment(comment_id){
-    voteComment(comment_id,'downVote')
+    return voteComment(comment_id,'downVote')
 }
 
 export const updatePost=(post) =>

@@ -58,22 +58,21 @@ export function fetchPosts() {
 
 export function removePost(post){
     return (dispatch) => {
-        return ReadableAPI.deletePost(post.id).then(post => dispatch(deletePost(post.id)))
+        return ReadableAPI.deletePost(post.id).then(dispatch(deletePost(post.id)))
     }
 }
 
 
 export function createPost(post) {
     return dispatch => {
-        return ReadableAPI.createPost(post).then(posts => dispatch(addPost(post)))
+        return ReadableAPI.createPost(post).then(dispatch(addPost(post)))
     }
 }
 
 
 export function upVote(post){
     return dispatch=>{
-        dispatch(votePost(post,UP))
-        return ReadableAPI.upVotePost(post.id)
+        return ReadableAPI.upVotePost(post.id).then(dispatch(votePost(post,UP)))
     }
 }
 
@@ -85,7 +84,6 @@ export function downVote(post){
 
 export function updatePost(post) {
     return dispatch => {
-        dispatch(update(post))
-        return ReadableAPI.updatePost(post).then()
+        return ReadableAPI.updatePost(post).then(dispatch(update(post)))
     }
 }

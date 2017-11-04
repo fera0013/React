@@ -1,13 +1,11 @@
 import * as ReadableAPI from "../utils/ReadableAPI";
 export const CREATE_COMMENT = 'CREATE_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
-export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const RETRIEVE_COMMENTS = 'RETRIEVE_COMMENTS'
-export const SELECT_POST = 'SELECT_POST'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
 export const UPDATE_COMMENT = "UPDATE_COMMENT"
 const UP = 'UP'
-const DOWN = 'DO'
+const DOWN = 'DOWN'
 
 
 function createComment(comment){
@@ -74,21 +72,18 @@ export function removeComment(comment){
 
 export function upVote(comment){
     return dispatch=>{
-        dispatch(voteComment(comment,UP))
-        return ReadableAPI.upVoteComment(comment.id)
+        return ReadableAPI.upVoteComment(comment.id).then(dispatch(voteComment(comment,UP)))
     }
 }
 
 export function downVote(comment){
     return dispatch=>{
-        dispatch(voteComment(comment,DOWN))
-        return ReadableAPI.downVoteComment(comment.id)
+        return ReadableAPI.downVoteComment(comment.id).then( dispatch(voteComment(comment,DOWN)))
     }
 }
 
 export function updateComment(comment) {
     return dispatch => {
-        dispatch(update(comment))
-        return ReadableAPI.updateComment(comment)
+        return ReadableAPI.updateComment(comment).then(dispatch(update(comment)))
     }
 }
