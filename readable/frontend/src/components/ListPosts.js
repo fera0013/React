@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 import {
      createPost, fetchPosts,
 } from '../actions/post'
-import Picker from "./Picker";
 import {connect} from "react-redux";
 import * as ReadableAPI from "../utils/ReadableAPI";
 import {Link} from "react-router-dom";
@@ -15,14 +14,15 @@ import Post from "./Post";
 
 
 export class ListPosts extends Component {
-    state= {
-        sortMethods: ['voteScore', 'timestamp'],
-        sortMethod: 'voteScore',
-        categories: ['all'],
-        selectedCategory: 'all',
-    }
+
     constructor(props) {
         super(props)
+        this.state= {
+            sortMethods: ['voteScore', 'timestamp'],
+            sortMethod: 'voteScore',
+            categories: ['all'],
+            selectedCategory: 'all',
+        }
         this.handleSelectCategory = this.handleSelectCategory.bind(this)
     }
     componentDidMount() {
@@ -41,56 +41,76 @@ export class ListPosts extends Component {
         this.props.create(post)
     }
 
-
     render() {
         const posts = Array.from(this.props.posts.values())
         return (
-            <div className='list-posts'>
-                {this.state.categories.map((category) => (
-                    //ToDo: Link to route /:category
-                    <Link key={category} to="">
-                        <button
+            <div>
+                <div className="top-bar">
+                    {this.state.categories.map((category) => (
+                        //ToDo: Link to route /:category
+                        <Link
+                            to=""
                             onClick={() => this.setState({selectedCategory: category})}
-                            key={category}>
+                            key={category}
+                            className="top-bar-item"  >
                             {category}
-                        </button>
-                    </Link>
-                ))}
-                <Picker
-                    value={this.state.sortMethod}
-                    options={this.state.sortMethods}
-                    onChange={(itemValue, itemIndex) => this.setState({sortMethod: itemValue})}
-                />
-                <ul className='post-list'>
-                    {posts.filter((post)=>{
-                        return 'all' === this.state.selectedCategory || this.state.selectedCategory === post.category
-                    }).sort((post_1,post_2)=>{
-                        return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
-                    }).map((post) =>{
-                        return(
-                         <Post
-                             key={post.id}
-                             post={post}
-                         />
-                        )})}
-                </ul>
-                <div>
-                    {this.state.editFormOpen?
-                        <div>
+                        </Link>
+                    ))}
+                    <label for="sort" className="top-bar-item">sort by:</label>
+                    <select
+                        id="sort"
+                        className="top-bar-item"
+                        placeholder="sortMethod"
+                        name="sortMethod"
+                        onChange={(event)=> {this.setState(
+                            {
+                                sortMethod: event.target.value
+                            }
+                        )}}
+                        value={this.state.sortMethod}>
+                        {this.state.sortMethods.map(option => (
+                            <option
+                                value={option}
+                                key={option}
+                                defaultValue={this.state.sortMethod}
+                            >
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className='list-posts'>
+                    <ul className='post-list'>
+                        {posts.filter((post)=>{
+                            return 'all' === this.state.selectedCategory || this.state.selectedCategory === post.category
+                        }).sort((post_1,post_2)=>{
+                            return post_1[this.state.sortMethod]<post_2[this.state.sortMethod]
+                        }).map((post) =>{
+                            return(
+                             <Post
+                                 key={post.id}
+                                 post={post}
+                             />
+                            )})}
+                    </ul>
+                    <div>
+                        {this.state.editFormOpen?
+                            <div>
+                                <Link
+                                    to=''
+                                    onClick={()=>{this.setState({editFormOpen:false})}}>
+                                    Close
+                                </Link>
+                                <PostForm
+                                    onSubmit={(post)=>this.createPost(post)}
+                                />
+                            </div>:
                             <Link
                                 to=''
-                                onClick={()=>{this.setState({editFormOpen:false})}}>
-                                Close
-                            </Link>
-                            <PostForm
-                                onSubmit={(post)=>this.createPost(post)}
-                            />
-                        </div>:
-                        <Link
-                            to=''
-                            onClick={()=>{this.setState({editFormOpen:true})}}>
-                            Add post
-                        </Link>}
+                                onClick={()=>{this.setState({editFormOpen:true})}}>
+                                Add post
+                            </Link>}
+                    </div>
                 </div>
             </div>
         )
