@@ -39,6 +39,10 @@ export default function reducer(
         case DELETE_POST:
             var newState = { ...state };
             newState.posts.delete(action.post_id)
+            newState.comments.forEach((comment)=>{
+                if(comment.parentId===action.post_id)
+                {comment.parentDeleted===true}
+            })
             return newState
         case VOTE_POST:
             var newState = { ...state };
