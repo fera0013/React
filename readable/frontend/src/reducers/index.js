@@ -37,13 +37,12 @@ export default function reducer(
             newState.posts.set(action.post.id,action.post)
             return newState
         case DELETE_POST:
-            var newState = { ...state };
-            newState.posts.delete(action.post_id)
-            newState.comments.forEach((comment)=>{
-                if(comment.parentId===action.post_id)
-                {comment.parentDeleted===true}
+            var posts= new Map(state.posts)
+            posts.delete(action.post_id)
+            return Object.assign({}, state,  {
+                ...state,
+                posts
             })
-            return newState
         case VOTE_POST:
             var newState = { ...state };
             newState.posts.set(action.post.id,action.post)
