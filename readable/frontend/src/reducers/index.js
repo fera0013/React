@@ -26,10 +26,11 @@ export default function reducer(
             newState.posts.set(action.post.id,action.post)
             return newState
         case RETRIEVE_POSTS:
-            var posts = new Map()
+            var posts=new Map()
             action.posts.forEach((post)=>{posts.set(post.id,post)})
-            return Object.assign({}, state, {
-                posts: posts
+            return Object.assign({}, state,  {
+                ...state,
+                posts
             })
         case UPDATE_POST:
             var newState = { ...state };
@@ -52,13 +53,12 @@ export default function reducer(
             newState.comments.set(action.comment.id,action.comment)
             return newState
         case RETRIEVE_COMMENTS:
-            var comments=new Map()
+            var comments= new Map(state.comments)
             action.comments.forEach((comment)=>{comments.set(comment.id,comment)})
             return Object.assign({}, state,  {
                 ...state,
-                comments: comments
+                comments
             })
-            return newState
         case UPDATE_COMMENT:
             var newState = { ...state };
             newState.comments.set(action.comment.id,action.comment)
