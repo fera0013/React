@@ -25,6 +25,8 @@ export class ListComments extends Component {
         this.props.create(comment)
     }
     render() {
+        console.log(Array.from(this.props.comments.values())
+        )
         const comments = Array.from(this.props.comments.values())
             .filter((comment)=>{return comment.parentId===this.props.post.id})
         return (

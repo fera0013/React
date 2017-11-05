@@ -3,9 +3,7 @@
  */
 import React from 'react'
 import * as ReadableAPI from "../utils/ReadableAPI";
-import {createPost} from "../actions/post";
 import {v1} from "uuid";
-import {connect} from "react-redux";
 
 
 export default  class PostForm extends React.Component {

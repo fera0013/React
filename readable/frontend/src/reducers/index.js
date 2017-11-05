@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import {
     RETRIEVE_POSTS,
     DELETE_POST,
@@ -53,8 +52,12 @@ export default function reducer(
             newState.comments.set(action.comment.id,action.comment)
             return newState
         case RETRIEVE_COMMENTS:
-            var newState = { ...state };
-            action.comments.forEach((comment)=>{newState.comments.set(comment.id,comment)})
+            var comments=new Map()
+            action.comments.forEach((comment)=>{comments.set(comment.id,comment)})
+            return Object.assign({}, state,  {
+                ...state,
+                comments: comments
+            })
             return newState
         case UPDATE_COMMENT:
             var newState = { ...state };

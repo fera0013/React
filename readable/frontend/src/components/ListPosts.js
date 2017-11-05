@@ -56,7 +56,7 @@ export class ListPosts extends Component {
                             {category}
                         </Link>
                     ))}
-                    <label for="sort" className="top-bar-item">sort by:</label>
+                    <label className="top-bar-item">sort by:</label>
                     <select
                         id="sort"
                         className="top-bar-item"
