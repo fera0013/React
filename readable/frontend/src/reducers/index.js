@@ -63,9 +63,12 @@ export default function reducer(
             newState.comments.set(action.comment.id,action.comment)
             return newState
         case DELETE_COMMENT:
-            var newState = { ...state };
-            newState.comments.delete(action.comment_id)
-            return newState
+            var comments= new Map(state.comments)
+            comments.delete(action.comment.id)
+            return Object.assign({}, state,  {
+                ...state,
+                comments
+            })
         case VOTE_COMMENT:
             var newState = { ...state };
             newState.comments.set(action.comment.id,action.comment)
