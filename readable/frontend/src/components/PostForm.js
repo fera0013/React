@@ -52,12 +52,16 @@ export default  class PostForm extends React.Component {
 
     handleSubmit(e){
         e.preventDefault()
+        console.log(this.state.post)
         let new_post = this.state.post
         if(this.props.post===undefined)
         {
             new_post.id= v1()
+            new_post.voteScore = 1
+
         }
         new_post.timestamp=Date.now()
+        console.log(new_post)
         this.props.onSubmit(new_post)
     }
 
