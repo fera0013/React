@@ -44,9 +44,15 @@ export default function reducer(
                 posts
             })
         case VOTE_POST:
-            var newState = { ...state };
-            newState.posts.set(action.post.id,action.post)
-            return newState
+            //There must be a more elegant way to do this
+            var posts= new Map(state.posts)
+            var newPost= {...state.posts.get(action.post.id)}
+            newPost.voteScore = action.newVote
+            posts.set(newPost.id,newPost)
+            return Object.assign({}, state,  {
+                ...state,
+                posts
+            })
         case CREATE_COMMENT:
             var newState = { ...state };
             newState.comments.set(action.comment.id,action.comment)
@@ -70,9 +76,14 @@ export default function reducer(
                 comments
             })
         case VOTE_COMMENT:
-            var newState = { ...state };
-            newState.comments.set(action.comment.id,action.comment)
-            return newState
+            comments= new Map(state.comments)
+            var newComment= {...state.comments.get(action.comment.id)}
+            newComment.voteScore = action.newVote
+            comments.set(newComment.id,newComment)
+            return Object.assign({}, state,  {
+                ...state,
+                comments
+            })
         default:
             return state
     }

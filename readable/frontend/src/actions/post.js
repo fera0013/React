@@ -11,11 +11,12 @@ const DOWN = 'DOWN'
 
 
 
-function votePost(post,direction){
+function votePost(post,direction, newVote){
     return {
         type: VOTE_POST,
         post,
-        direction
+        direction,
+        newVote
     }
 }
 
@@ -72,13 +73,13 @@ export function createPost(post) {
 
 export function upVote(post){
     return dispatch=>{
-        return ReadableAPI.upVotePost(post.id).then(dispatch(votePost(post,UP)))
+        return ReadableAPI.upVotePost(post.id).then(dispatch(votePost(post,UP,post.voteScore+1)))
     }
 }
 
 export function downVote(post){
     return dispatch=>{
-        return ReadableAPI.downVotePost(post.id).then(dispatch(votePost(post,DOWN)))
+        return ReadableAPI.downVotePost(post.id).then(dispatch(votePost(post,DOWN,post.voteScore-1)))
     }
 }
 

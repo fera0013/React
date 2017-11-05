@@ -25,11 +25,12 @@ export function create(comment) {
 
 
 
-function voteComment(comment,direction){
+function voteComment(comment,direction,newVote){
     return {
         type: VOTE_COMMENT,
         comment,
-        direction
+        direction,
+        newVote
     }
 }
 
@@ -72,13 +73,15 @@ export function removeComment(comment){
 
 export function upVote(comment){
     return dispatch=>{
-        return ReadableAPI.upVoteComment(comment.id).then(dispatch(voteComment(comment,UP)))
+        return ReadableAPI.upVoteComment(comment.id)
+            .then(dispatch(voteComment(comment,UP,comment.voteScore+1)))
     }
 }
 
 export function downVote(comment){
     return dispatch=>{
-        return ReadableAPI.downVoteComment(comment.id).then( dispatch(voteComment(comment,DOWN)))
+        return ReadableAPI.downVoteComment(comment.id)
+            .then( dispatch(voteComment(comment,DOWN,comment.voteScore-1)))
     }
 }
 
